@@ -1,0 +1,2 @@
+'#0077B6' - AZUL PRIMARIO
+'#D9D9D9' - backgroundColor

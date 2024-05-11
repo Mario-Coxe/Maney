@@ -1,2 +1,2 @@
-# Maney
- Maney is a app for finder atm 
+# NotasExpress
+NotasExpress App de gestão academica
