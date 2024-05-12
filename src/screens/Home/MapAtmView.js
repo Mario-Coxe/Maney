@@ -137,8 +137,7 @@ const MapAtmView = () => {
     const horas = Math.floor(duration / 60);
     const minutos = duration % 60;
 
-    const minutosArredondados = Math.round(minutos * 10) / 10; // Arredonda para duas casas decimais
-
+    const minutosArredondados = Math.round(minutos * 10) / 10;
     let mensagem = "";
 
     if (horas > 0) {
@@ -158,9 +157,10 @@ const MapAtmView = () => {
   }
 
   const mensagemDuracao = formatarDuracao(duration);
-  console.log(`Faltam ${mensagemDuracao}.`);
+  //console.log(`Faltam ${mensagemDuracao}.`);
 
-  console.log(duration);
+
+  console.log(userLocation)
   return (
     <View style={styles.container}>
       <HeaderOther />

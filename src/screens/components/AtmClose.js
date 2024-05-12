@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
   Text,
   Dimensions,
   FlatList,
-  Modal,
-  Button,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
-
+import {
+  requestForegroundPermissionsAsync,
+  getCurrentPositionAsync,
+} from "expo-location";
+import { API_URL } from "../../../application.properties";
+import Loading from "./Loading";
 const { width } = Dimensions.get("window");
 
 const atm = [
@@ -46,43 +48,100 @@ const atm = [
 ];
 
 export default function AtmClose() {
+  const [userLocation, setUserLocation] = useState(null);
+  const [atms, setAtms] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    requestLocationPermission();
+  }, []);
+
+  const requestLocationPermission = async () => {
+    try {
+      const { status } = await requestForegroundPermissionsAsync();
+      if (status === "granted") {
+        console.log("Location permission granted");
+        getCurrentLocation();
+      } else {
+        console.log("Location permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  const getCurrentLocation = async () => {
+    try {
+      const location = await getCurrentPositionAsync({});
+      console.log("Current position:", location.coords);
+      setUserLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+    } catch (error) {
+      console.log("Error getting current location:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchClosestAtms = async () => {
+      try {
+        if (userLocation) {
+          const response = await fetch(
+            `${API_URL}closest?latitude=${userLocation.latitude}&longitude=${userLocation.longitude}`
+          );
+          const data = await response.json();
+          setAtms(data);
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar os caixas eletrônicos:", error);
+        setIsLoading(false);
+      }
+    };
+
+    fetchClosestAtms();
+  }, [userLocation]);
 
   const RenderItem = ({ item }) => {
     return (
-      <View style={{ marginBottom: 10 }}>
-        <TouchableOpacity
-          style={estilos.containerAtm}
-        >
-          <View style={estilos.logo}>
-            <Text style={estilos.textoLogo}>{item.logoBanco}</Text>
-          </View>
-          <View>
-            <Text style={estilos.textoBanco}>{item.banco}</Text>
-            <Text style={estilos.textoEstado}>{item.status}</Text>
-          </View>
-          <View>
-            <Text style={estilos.textoDistancia}>{item.distancia}</Text>
-            <Text style={estilos.textoEstado}>Activo</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={styles.containerAtm}>
+        <View style={styles.logo}>
+          <Text style={styles.textoLogo}>{item.name}</Text>
+        </View>
+        <View>
+          <Text style={styles.textoBanco}>{item.address}</Text>
+          <Text style={styles.textoEstado}>
+            Dinheiro: {item.has_cash ? "Sim" : "Não"}
+          </Text>
+          <Text style={styles.textoEstado}>
+            Papel: {item.has_paper ? "Sim" : "Não"}
+          </Text>
+        </View>
+        <View>
+          <Text style={styles.textoDistancia}>{item.distance} km</Text>
+        </View>
+      </TouchableOpacity>
     );
   };
 
+  console.log(atms);
+
   return (
     <View style={estilos.container}>
-      <View>
-        <Text style={estilos.texto}>4 ATM's próximo de você</Text>
-      </View>
-      <View>
-        {/* <FlatList
-          data={atm}
+      {isLoading ? (
+        <View style={{ marginTop: 40 }}>
+          <Loading />
+        </View>
+      ) : (
+        <FlatList
+          data={atms}
           renderItem={RenderItem}
           keyExtractor={(item) => item.id.toString()}
-          vertical
           showsVerticalScrollIndicator={true}
-        /> */}
-      </View>
+          contentContainerStyle={estilos.flatListContent}
+        />
+      )}
     </View>
   );
 }
@@ -93,14 +152,14 @@ const estilos = StyleSheet.create({
     marginTop: 30,
     borderTopEndRadius: 20,
     borderTopStartRadius: 20,
-    width: width
+    width: width,
   },
   texto: {
     color: "white",
     marginTop: 30,
     marginBottom: 5,
     fontSize: 15,
-    textAlign: "center"
+    textAlign: "center",
   },
   logo: {
     backgroundColor: "white",
@@ -135,4 +194,80 @@ const estilos = StyleSheet.create({
   textoDistancia: {
     color: "black",
   },
+  flatListContent: {
+    paddingBottom: 20, // Adicione margem inferior para a FlatList
+  },
 });
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  containerAtm: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
+    marginVertical: 15,
+    borderRadius: 10,
+    padding: 10,
+    paddingHorizontal: 20,
+  },
+  logo: {
+    backgroundColor: "white",
+    borderRadius: 50,
+    borderColor: "black",
+    borderWidth: 1,
+    width: 50,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  textoLogo: {
+    fontSize: 18,
+  },
+  textContainer: {
+    flex: 1,
+    marginLeft: 15,
+  },
+  textoBanco: {
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  textoDistancia: {
+    fontSize: 16,
+  },
+  iconContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  dinheiroContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 20,
+  },
+  papelContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  distanciaContainer: {
+    flexDirection: "row",
+    marginTop: 50,
+    right: 300,
+  },
+  nomeRuaContainer: {
+    marginTop: 10,
+  },
+  nomeRua: {
+    textAlign: "center",
+    justifyContent: "center",
+    fontSize: 15,
+  },
+  values: {
+    fontSize: 12,
+    fontFamily: "Poppins_400Regular",
+  },
+  flatListContent: {
+    paddingBottom: 20, // Adicione margem inferior para a FlatList
+  },
+});
+   

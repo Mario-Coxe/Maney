@@ -39,17 +39,18 @@ export default function ListViewAtms() {
       try {
         const response = await fetch(`${API_URL}atms/ByStreet/${id}`);
         if (!response.ok) {
-          throw new Error("Erro na requisição da API");
+          <Loading />;
+          //throw new Error("Erro na requisição da API");
         }
         const data = await response.json();
         setAtms(data);
         setIsLoading(false);
         if (data.length > 0) {
           const nomeRuaPrimeiroAtm = data[0].street.name;
-          setNomeRua(nomeRuaPrimeiroAtm.substring(5));
+          setNomeRua(nomeRuaPrimeiroAtm.substring(0));
         }
       } catch (error) {
-        console.error("Erro:", error);
+        //console.error("Erro:", error);
         setIsLoading(false);
       }
     };

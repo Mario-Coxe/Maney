@@ -16,7 +16,7 @@ const Home = () => {
         <Search />
         <LuandaMunicpes />
         <ListProvice />
-        {/* <AtmClose /> */}
+        <AtmClose />
       </ScrollView>
     </View>
   );
