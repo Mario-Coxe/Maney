@@ -28,7 +28,6 @@ const MapAtmView = () => {
     longitude: Number(latitude),
   };
 
-  console.log(destination);
   useEffect(() => {
     requestLocationPermission();
   }, []);
@@ -48,7 +47,7 @@ const MapAtmView = () => {
   const getCurrentLocation = async () => {
     try {
       const location = await getCurrentPositionAsync({});
-      console.log("Current position:", location.coords);
+      //console.log("Current position:", location.coords);
       setUserLocation({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
@@ -56,7 +55,7 @@ const MapAtmView = () => {
       fetchRoute(location.coords, destination);
       fetchUserAddress(location.coords.latitude, location.coords.longitude);
     } catch (error) {
-      console.log("Error getting current location:", error);
+      // console.log("Error getting current location:", error);
     }
   };
 
@@ -69,10 +68,10 @@ const MapAtmView = () => {
       if (response.data && response.data.display_name) {
         setUserAddress(response.data.display_name);
       } else {
-        console.error("Erro ao obter o endereço do usuário");
+        //console.error("Erro ao obter o endereço do usuário");
       }
     } catch (error) {
-      console.error("Erro ao obter o endereço do usuário:", error);
+      // console.error("Erro ao obter o endereço do usuário:", error);
     }
   };
 
@@ -130,9 +129,38 @@ const MapAtmView = () => {
         );
       }
     } catch (error) {
-      console.error("Erro ao obter a rota:", error);
+      //console.error("Erro ao obter a rota:", error);
     }
   };
+
+  function formatarDuracao(duration) {
+    const horas = Math.floor(duration / 60);
+    const minutos = duration % 60;
+
+    const minutosArredondados = Math.round(minutos * 10) / 10; // Arredonda para duas casas decimais
+
+    let mensagem = "";
+
+    if (horas > 0) {
+      mensagem += `${horas} hora${horas !== 1 ? "s" : ""}`;
+      if (minutosArredondados > 0) {
+        mensagem += ` e ${minutosArredondados} minuto${
+          minutosArredondados !== 1 ? "s" : ""
+        }`;
+      }
+    } else {
+      mensagem += `${minutosArredondados} minuto${
+        minutosArredondados !== 1 ? "s" : ""
+      }`;
+    }
+
+    return mensagem;
+  }
+
+  const mensagemDuracao = formatarDuracao(duration);
+  console.log(`Faltam ${mensagemDuracao}.`);
+
+  console.log(duration);
   return (
     <View style={styles.container}>
       <HeaderOther />
@@ -181,8 +209,7 @@ const MapAtmView = () => {
         <RouteDescription
           title={atmData.address}
           distance={distance}
-          startPoint={userAddress}
-          endPoint={atmData.name}
+          //duration={mensagemDuracao}
         />
       </View>
     </View>

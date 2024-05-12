@@ -8,7 +8,7 @@ import {
   Poppins_400Regular,
 } from "@expo-google-fonts/poppins";
 
-const RouteDescription = ({ title, distance, startPoint, endPoint }) => {
+const RouteDescription = ({ title, distance, duration }) => {
   const [fontsLoaded] = useFonts({
     Poppins_700Bold,
     Poppins_400Regular,
@@ -24,17 +24,31 @@ const RouteDescription = ({ title, distance, startPoint, endPoint }) => {
   return (
     <View style={styles.header}>
       <View style={styles.title}>
-        <Text style={[styles.headerText, { fontFamily: "Poppins_700Bold" }]}>
-          {title}
+        <Text
+          style={{
+            fontFamily: "Poppins_400Regular",
+            color: "#000",
+            fontSize: 12,
+          }}
+        >
+          Endereço:
+          <Text style={[styles.headerText, { fontFamily: "Poppins_700Bold" }]}>
+            {title}
+          </Text>
         </Text>
         <Text
           style={[styles.distanceText, { fontFamily: "Poppins_400Regular" }]}
         >
+          Distância:
           <Text style={{ fontFamily: "Poppins_700Bold" }}> {distance}</Text> Km
         </Text>
-        <Text style={[styles.pointText, { fontFamily: "Poppins_400Regular" }]}>
-          De: {startPoint} - Para: {endPoint}
-        </Text>
+
+        {/* <Text
+          style={[styles.distanceText, { fontFamily: "Poppins_400Regular" }]}
+        >
+          Duração:
+          <Text style={{ fontFamily: "Poppins_700Bold" }}> {duration}</Text> Km
+        </Text> */}
       </View>
     </View>
   );
@@ -45,7 +59,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 100,
     paddingTop: 36,
-    backgroundColor: "#0E7B46",
+    backgroundColor: "#f5f5f5",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
@@ -53,7 +67,7 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 10,
   },
   headerText: {
-    color: "#fff",
+    color: "#000",
     fontSize: 15,
     marginLeft: 10,
   },
@@ -68,7 +82,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   distanceText: {
-    color: "#fff",
+    color: "#000",
     fontSize: 12,
   },
   pointText: {
