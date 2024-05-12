@@ -57,7 +57,6 @@ const Street = () => {
     return <View style={styles.container}></View>;
   }
   return (
-    <ScrollView>
       <View style={styles.container}>
         <HeaderOther title={"Ruas"} />
         {isLoading ? (
@@ -110,7 +109,6 @@ const Street = () => {
           </>
         )}
       </View>
-    </ScrollView>
   );
 };
 
