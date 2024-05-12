@@ -10,7 +10,7 @@ import {
 import axios from "axios";
 import polyline from "@mapbox/polyline";
 import MapView, { Marker, Polyline } from "react-native-maps";
-
+import RouteDescription from "../components/RouteDescription";
 const API_KEY = "5b3ce3597851110001cf6248ba8bff767c4940bdb52e66f762402a89";
 
 const MapAtmView = () => {
@@ -19,6 +19,10 @@ const MapAtmView = () => {
   const { latitude, longitude } = atmData;
   const [routeCoordinates, setRouteCoordinates] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
+  const [distance, setDistance] = useState();
+  const [duration, setDuration] = useState();
+  const [userAddress, setUserAddress] = useState("");
+
   const destination = {
     latitude: Number(longitude),
     longitude: Number(latitude),
@@ -29,16 +33,12 @@ const MapAtmView = () => {
     requestLocationPermission();
   }, []);
 
-  //console.log("Dados do ATM:", atmData);
-
   const requestLocationPermission = async () => {
     try {
       const { status } = await requestForegroundPermissionsAsync();
       if (status === "granted") {
-        //console.log("Location permission granted");
         getCurrentLocation();
       } else {
-        //console.log("Location permission denied");
       }
     } catch (err) {
       console.warn(err);
@@ -54,17 +54,30 @@ const MapAtmView = () => {
         longitude: location.coords.longitude,
       });
       fetchRoute(location.coords, destination);
+      fetchUserAddress(location.coords.latitude, location.coords.longitude);
     } catch (error) {
       console.log("Error getting current location:", error);
     }
   };
 
+  const fetchUserAddress = async (latitude, longitude) => {
+    try {
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+      );
+
+      if (response.data && response.data.display_name) {
+        setUserAddress(response.data.display_name);
+      } else {
+        console.error("Erro ao obter o endereço do usuário");
+      }
+    } catch (error) {
+      console.error("Erro ao obter o endereço do usuário:", error);
+    }
+  };
+
   const fetchRoute = async (currentLocation, destin) => {
     try {
-      //console.log("Enviando solicitação de rota...");
-      // console.log("Origem:", currentLocation);
-      // console.log("Destino:", destin);
-
       const response = await axios.post(
         "https://api.openrouteservice.org/v2/directions/driving-car",
         {
@@ -84,16 +97,21 @@ const MapAtmView = () => {
         }
       );
 
-      // console.log("Resposta da rota:", response.data);
       if (
         response.data &&
         response.data.routes &&
         response.data.routes.length > 0
       ) {
         const route = response.data.routes[0];
+        if (route.summary && route.summary.distance) {
+          const distance = route.summary.distance;
+          const duration = route.summary.duration;
+
+          setDuration(duration);
+          setDistance(distance);
+        }
         if (route.geometry) {
           const decodedCoordinates = polyline.decode(route.geometry);
-
           const coordinates = decodedCoordinates.map((coord) => ({
             latitude: coord[0],
             longitude: coord[1],
@@ -115,18 +133,17 @@ const MapAtmView = () => {
       console.error("Erro ao obter a rota:", error);
     }
   };
-
   return (
     <View style={styles.container}>
-      <HeaderOther title={atmData.name} />
+      <HeaderOther />
       <View style={{ flex: 1 }}>
         <MapView
           style={styles.map}
           region={{
             latitude: userLocation ? userLocation.latitude : 0,
             longitude: userLocation ? userLocation.longitude : 0,
-            latitudeDelta: 1.16,
-            longitudeDelta: 0.9,
+            latitudeDelta: 0.007,
+            longitudeDelta: 0.026,
           }}
         >
           {userLocation && (
@@ -135,8 +152,9 @@ const MapAtmView = () => {
                 latitude: userLocation.latitude,
                 longitude: userLocation.longitude,
               }}
-              title="Your Location"
-              pinColor="blue"
+              title="Minha localização"
+              description={userAddress}
+              pinColor="#008000"
             />
           )}
           {destination && (
@@ -145,7 +163,8 @@ const MapAtmView = () => {
                 latitude: destination.latitude,
                 longitude: destination.longitude,
               }}
-              title="Destination"
+              title="Destino"
+              description={atmData.name}
               pinColor="red"
             />
           )}
@@ -159,7 +178,12 @@ const MapAtmView = () => {
         </MapView>
       </View>
       <View>
-        <HeaderOther title={atmData.name} />
+        <RouteDescription
+          title={atmData.address}
+          distance={distance}
+          startPoint={userAddress}
+          endPoint={atmData.name}
+        />
       </View>
     </View>
   );

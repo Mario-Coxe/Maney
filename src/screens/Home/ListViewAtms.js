@@ -61,7 +61,7 @@ export default function ListViewAtms() {
     return () => clearInterval(interval);
   }, []);
 
-  console.log(atms);
+  //console.log(atms);
 
   const handleItemPress = (item) => {
     navigation.navigate("MapAtmView", { atmData: item });
