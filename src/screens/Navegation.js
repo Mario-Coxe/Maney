@@ -17,7 +17,7 @@ import ListViewAtms from "./Home/ListViewAtms";
 import Map from "./components/Map";
 import MapAtmView from "./Home/MapAtmView";
 import RegisterScreen from "./Autentication/RegisterScreen";
-
+import HomeAngent from "./agent/HomeAgent";
 import { Provider } from "react-redux";
 import { Store } from "../features/store/index";
 const Stack = createStackNavigator();
@@ -26,8 +26,14 @@ function Navegation() {
   return (
     <Provider store={Store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          
+        <Stack.Navigator initialRouteName="Login">
+
+          <Stack.Screen
+            name="HomeAgent"
+            component={HomeAngent}
+            options={{ headerShown: false }}
+          />
+
           <Stack.Screen
             name="Register"
             component={RegisterScreen}

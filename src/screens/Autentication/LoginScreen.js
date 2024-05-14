@@ -22,8 +22,9 @@ const LoginScreen = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [phone, setPhone] = useState("912121212");
-  const [password, setPassword] = useState("12345678");
+  const [phone, setPhone] = useState();
+  const [password, setPassword] = useState();
+  const [userData, setUserData] = useState({});
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -31,15 +32,13 @@ const LoginScreen = () => {
     try {
       const response = await dispatch(login({ phone, password }));
 
-      //console.log("RESPONSE->", response.payload.data[0].tipo_usuario);
-
+      const userDataFromResponse = response.payload.data[0];
+      setUserData({ userDataFromResponse });
+      //console.log("RESPONSE->", userDataFromResponse);
       if (response.payload.data[0].tipo_usuario === "cliente") {
         navigation.navigate("Home");
       } else {
-        console.error(
-          "O tipo de usuário não cliente:",
-          response.data.tipo_usuario
-        );
+        navigation.navigate("HomeAgent", { userData: userDataFromResponse });
       }
     } catch (error) {
       console.error("Erro durante o login:", error);
