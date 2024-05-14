@@ -18,8 +18,6 @@ import {
   Poppins_400Regular,
 } from "@expo-google-fonts/poppins";
 
-const { width } = Dimensions.get("window");
-
 export default function ListViewAtms() {
   const route = useRoute();
   const { id } = route.params;
@@ -40,7 +38,6 @@ export default function ListViewAtms() {
         const response = await fetch(`${API_URL}atms/ByStreet/${id}`);
         if (!response.ok) {
           <Loading />;
-          //throw new Error("Erro na requisição da API");
         }
         const data = await response.json();
         setAtms(data);

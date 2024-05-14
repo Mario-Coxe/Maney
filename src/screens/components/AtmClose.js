@@ -147,7 +147,8 @@ export default function AtmClose() {
               { fontFamily: "Poppins_700Bold", fontSize: 12, color: "#000" },
             ]}
           >
-            {item.address}
+            {item.name}, {item.address}
+            
           </Text>
           <View style={styles.statusContainer}>
             <Text
@@ -187,7 +188,7 @@ export default function AtmClose() {
     );
   };
 
-  console.log(atms);
+ // console.log(atms);
 
   return (
     <View style={styles.container}>
