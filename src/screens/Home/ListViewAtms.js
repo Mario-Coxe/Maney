@@ -219,14 +219,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textoLogo: {
-    fontSize: 18,
+    fontSize: 14,
   },
   textContainer: {
     flex: 1,
     marginLeft: 15,
   },
   textoBanco: {
-    fontSize: 16,
+    fontSize: 15,
     marginBottom: 5,
   },
   textoDistancia: {

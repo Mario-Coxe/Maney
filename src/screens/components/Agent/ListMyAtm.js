@@ -15,11 +15,16 @@ import {
   Poppins_700Bold,
   Poppins_400Regular,
 } from "@expo-google-fonts/poppins";
+import { Ionicons } from "@expo/vector-icons";
+import ATMModal from "./ATMModal";
 
 const ListMyAtm = ({ id, name }) => {
   const route = useRoute();
   //const { id } = route.params;
   const navigation = useNavigation();
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedATMId, setSelectedATMId] = useState(null);
 
   const [fontsLoaded] = useFonts({
     Poppins_700Bold,
@@ -47,10 +52,124 @@ const ListMyAtm = ({ id, name }) => {
     fetchData();
   }, []);
 
-  console.log(atm);
+  const updateData = async () => {
+    try {
+      const response = await fetch(`${API_URL}getAtmAgent/${id}`);
+      const data = await response.json();
+      setAtm(data);
+    } catch (error) {
+      console.error("Erro:", error);
+    }
+  };
 
-  const handleStreets = (id) => {
-    navigation.navigate("Street", { id });
+  const renderLogoBanco = (name) => {
+    return name.substring(name.length - 3, name.length);
+  };
+
+  const RenderItem = ({ item }) => {
+    if (isLoading) {
+      return null;
+    }
+
+    let textColor = "#00FF00";
+
+    switch (renderLogoBanco(item.atm.name)) {
+      case "BAI":
+        textColor = "blue";
+        break;
+      case "BFA":
+        textColor = "#FD6502";
+        break;
+      case "SOL":
+        textColor = "#fecb00";
+        break;
+      case "BIC":
+        textColor = "red";
+        break;
+      case "BIR":
+        textColor = "#C27A23";
+        break;
+      case "BCI":
+        textColor = "#C27A23";
+        break;
+      case "BCS":
+        textColor = "#C27A23";
+        break;
+      case "BMA":
+        textColor = "#0d6efd";
+        break;
+      default:
+        textColor = "#0E7B46";
+        break;
+    }
+
+    if (!fontsLoaded) {
+      return <View style={styles.container}></View>;
+    }
+
+    return (
+      <TouchableOpacity
+        style={styles.containerAtm}
+        onPress={() => handleItemPress(item)}
+      >
+        <View style={styles.logo}>
+          <Text
+            style={[
+              styles.textoLogo,
+              { color: textColor, fontFamily: "Poppins_700Bold" },
+            ]}
+          >
+            {renderLogoBanco(item.atm.name)}
+          </Text>
+        </View>
+        <View style={styles.textContainer}>
+          <Text
+            style={[
+              styles.textoBanco,
+              { color: textColor, fontFamily: "Poppins_700Bold" },
+            ]}
+          >
+            {item.atm.name}
+          </Text>
+        </View>
+        <View style={styles.textContainer}>
+          <View style={styles.iconContainer}>
+            <View style={styles.dinheiroContainer}>
+              {item.atm.has_cash ? (
+                <>
+                  <Text style={styles.values}>Dinheiro</Text>
+                  <Ionicons name="checkmark" size={20} color="green" />
+                </>
+              ) : (
+                <>
+                  <Text style={styles.values}>Dinheiro</Text>
+                  <Ionicons name="close" size={20} color="red" />
+                </>
+              )}
+            </View>
+            <View style={styles.papelContainer}>
+              {item.atm.has_paper ? (
+                <>
+                  <Text style={styles.values}>Papel</Text>
+                  <Ionicons name="checkmark" size={20} color="green" />
+                </>
+              ) : (
+                <>
+                  <Text style={styles.values}>Papel</Text>
+                  <Ionicons name="close" size={20} color="red" />
+                </>
+              )}
+            </View>
+            <View style={styles.distanciaContainer}></View>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const handleItemPress = (item) => {
+    setModalVisible(true);
+    setSelectedATMId(item.atm.id);
   };
 
   if (!fontsLoaded) {
@@ -83,23 +202,17 @@ const ListMyAtm = ({ id, name }) => {
 
           <FlatList
             data={atm}
+            renderItem={RenderItem}
             keyExtractor={(item) => item.atm.id.toString()}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.item}
-                //onPress={() => handleStreets(item.id)}
-              >  
-                <Image
-                  source={require("../../../../assets/image/atm-infector-fb.png")}
-                  style={styles.imagem}
-                />
-                <Text style={styles.nomeAtm}>{item.atm.name}</Text>
-                <Text style={styles.nomeAtm}>{item.atm.address}</Text>
-              </TouchableOpacity>
-            )}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={true}
             contentContainerStyle={styles.flatListContent}
+          />
+
+          <ATMModal
+            isVisible={modalVisible}
+            closeModal={() => setModalVisible(false)}
+            atmId={selectedATMId}
+            updateData={updateData}
           />
         </View>
       )}
@@ -109,40 +222,77 @@ const ListMyAtm = ({ id, name }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 25,
+    flex: 1,
   },
-  item: {
-    padding: 5,
-    marginVertical: 8,
-    marginHorizontal: 4,
-    borderRadius: 40,
+  containerAtm: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
+    marginVertical: 15,
+    borderRadius: 10,
+    padding: 10,
+    paddingHorizontal: 20,
+  },
+  logo: {
+    backgroundColor: "white",
+    borderRadius: 50,
+    borderColor: "black",
+    borderWidth: 1,
+    width: 50,
+    height: 50,
+    justifyContent: "center",
     alignItems: "center",
   },
-  nomeAtm: { 
-    marginTop: 10,
-    fontFamily: "Poppins_400Regular",
-    fontSize: 12,
-    color: "#000",
+  textoLogo: {
+    fontSize: 14,
   },
-  imagem: {
-    width: 100,
-    height: 100,
-    borderRadius: 100,
+  textContainer: {
+    flex: 1,
+    marginLeft: 15,
+  },
+  textoBanco: {
+    fontSize: 15,
+    marginBottom: 5,
+  },
+  textoDistancia: {
+    fontSize: 16,
+  },
+  iconContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  dinheiroContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 20,
+  },
+  papelContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  distanciaContainer: {
+    flexDirection: "row",
+    marginTop: 50,
+    right: 300,
+  },
+  nomeRuaContainer: {
+    marginTop: 10,
+  },
+  nomeRua: {
+    textAlign: "center",
+    justifyContent: "center",
+    fontSize: 15,
+  },
+  values: {
+    fontSize: 12,
+    fontFamily: "Poppins_400Regular",
   },
   flatListContent: {
-    alignItems: "flex-start",
+    paddingBottom: 20,
   },
-  provinceLuanda: {},
   nameProvinceLuanda: {
-    color: "#000",
-    fontSize: 13,
     textAlign: "center",
-    marginBottom: 20
-  },
-  atmText: {
-    color: "#0E7B46",
-    fontSize: 15,
-    right: -20,
+    marginTop: 20,
   },
 });
 
