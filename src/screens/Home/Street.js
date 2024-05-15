@@ -56,7 +56,7 @@ const Street = () => {
     fetchData();
   }, []);
 
-  console.log(street);
+  //console.log(street);
   const ListViewAtms = (id) => {
     navigation.navigate("ListViewAtms", { id });
   };
