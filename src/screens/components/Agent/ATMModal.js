@@ -8,10 +8,18 @@ import {
   StyleSheet,
 } from "react-native";
 
-const ATMModal = ({ isVisible, closeModal, atmId, updateData }) => {
-  const [hasCash, setHasCash] = useState(false);
-  const [hasPaper, setHasPaper] = useState(false);
+const ATMModal = ({
+  isVisible,
+  closeModal,
+  atmId,
+  updateData,
+  _hasCash,
+  _hasPaper,
+}) => {
+  const [hasCash, setHasCash] = useState(_hasCash);
+  const [hasPaper, setHasPaper] = useState(_hasPaper);
 
+  console.log(hasCash, hasPaper);
   const toggleCash = () => {
     setHasCash(!hasCash);
   };
@@ -31,7 +39,7 @@ const ATMModal = ({ isVisible, closeModal, atmId, updateData }) => {
         }
       );
       const data = await response.json();
-      console.log(data); // Aqui você pode lidar com a resposta do servidor, se necessário
+      //console.log(data);
       closeModal();
       updateData();
     } catch (error) {

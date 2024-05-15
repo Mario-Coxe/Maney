@@ -58,12 +58,12 @@ const ListMunicipeOthersProvincia = () => {
   // console.log(street);
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <HeaderOther title={"Municipio"} />
-        {isLoading ? (
-          <Loading />
-        ) : (
+    <View style={styles.container}>
+      <HeaderOther title={"Municipio"} />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
           <View style={styles.container}>
             <FlatList
               data={street}
@@ -85,23 +85,24 @@ const ListMunicipeOthersProvincia = () => {
               contentContainerStyle={styles.flatListContent}
             />
           </View>
-        )}
-        <View style={styles.imageContainer}>
-          <Image
-            source={require("../../../assets/ui/Caminho_1.png")}
-            style={styles.image}
-          />
-          <Image
-            source={require("../../../assets/ui/Caminho_1.png")}
-            style={styles.image}
-          />
-          <Image
-            source={require("../../../assets/ui/Caminho_1.png")}
-            style={styles.image}
-          />
-        </View>
-      </View>
-    </ScrollView>
+
+          <View style={styles.imageContainer}>
+            <Image
+              source={require("../../../assets/ui/Caminho_1.png")}
+              style={styles.image}
+            />
+            <Image
+              source={require("../../../assets/ui/Caminho_1.png")}
+              style={styles.image}
+            />
+            <Image
+              source={require("../../../assets/ui/Caminho_1.png")}
+              style={styles.image}
+            />
+          </View>
+        </>
+      )}
+    </View>
   );
 };
 
@@ -126,13 +127,14 @@ const styles = StyleSheet.create({
   item: {
     padding: 5,
     marginVertical: 8,
-    marginHorizontal: 10,
+    marginHorizontal: 4,
     borderRadius: 40,
     alignItems: "center",
   },
   nomeAtm: {
     fontSize: 12,
     marginTop: 10,
+    fontFamily: "Poppins_400Regular",
   },
   imagem: {
     width: 100,

@@ -81,6 +81,12 @@ export default function AtmClose() {
     };
 
     fetchClosestAtms();
+
+    // 1 minutes (60000 milliseconds)
+    const intervalId = setInterval(fetchClosestAtms, 60000);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
   }, [userLocation]);
 
   const renderLogoBanco = (name) => {
@@ -148,7 +154,6 @@ export default function AtmClose() {
             ]}
           >
             {item.name}, {item.address}
-            
           </Text>
           <View style={styles.statusContainer}>
             <Text
@@ -188,7 +193,7 @@ export default function AtmClose() {
     );
   };
 
- // console.log(atms);
+  // console.log(atms);
 
   return (
     <View style={styles.container}>

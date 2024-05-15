@@ -26,7 +26,7 @@ function Navegation() {
   return (
     <Provider store={Store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="Home">
 
           <Stack.Screen
             name="HomeAgent"

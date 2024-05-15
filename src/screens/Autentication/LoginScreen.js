@@ -22,8 +22,8 @@ const LoginScreen = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
-  const [phone, setPhone] = useState();
-  const [password, setPassword] = useState();
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
   const [userData, setUserData] = useState({});
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -32,13 +32,16 @@ const LoginScreen = () => {
     try {
       const response = await dispatch(login({ phone, password }));
 
-      const userDataFromResponse = response.payload.data[0];
-      setUserData({ userDataFromResponse });
-      //console.log("RESPONSE->", userDataFromResponse);
-      if (response.payload.data[0].tipo_usuario === "cliente") {
-        navigation.navigate("Home");
+      if (response.payload && response.payload.data && response.payload.data.length > 0) {
+        const userDataFromResponse = response.payload.data[0];
+        setUserData(userDataFromResponse);
+        if (userDataFromResponse.tipo_usuario === "cliente") {
+          navigation.navigate("Home");
+        } else {
+          navigation.navigate("HomeAgent", { userData: userDataFromResponse });
+        }
       } else {
-        navigation.navigate("HomeAgent", { userData: userDataFromResponse });
+        throw new Error("Dados de login inválidos.");
       }
     } catch (error) {
       console.error("Erro durante o login:", error);

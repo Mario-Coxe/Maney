@@ -26,6 +26,9 @@ const ListMyAtm = ({ id, name }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedATMId, setSelectedATMId] = useState(null);
 
+  const [hasCash, setHasCash] = useState(false);
+  const [hasPaper, setHasPaper] = useState(true);
+
   const [fontsLoaded] = useFonts({
     Poppins_700Bold,
     Poppins_400Regular,
@@ -168,8 +171,10 @@ const ListMyAtm = ({ id, name }) => {
   };
 
   const handleItemPress = (item) => {
-    setModalVisible(true);
     setSelectedATMId(item.atm.id);
+    setHasCash(item.atm.has_cash);
+    setHasPaper(item.atm.has_paper);
+    setModalVisible(true);
   };
 
   if (!fontsLoaded) {
@@ -213,13 +218,15 @@ const ListMyAtm = ({ id, name }) => {
             closeModal={() => setModalVisible(false)}
             atmId={selectedATMId}
             updateData={updateData}
+            _hasCash={hasCash}
+            _hasPaper={hasPaper}
           />
         </View>
       )}
     </View>
   );
 };
-
+   
 const styles = StyleSheet.create({
   container: {
     flex: 1,

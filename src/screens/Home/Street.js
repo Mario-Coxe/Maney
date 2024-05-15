@@ -29,16 +29,24 @@ const Street = () => {
   const navigation = useNavigation();
   const [street, setStreet] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [notFound, setNotFound] = useState(false);
+
   //console.log(" id municipio >> ", municipeId)
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
+      setNotFound(false);
       try {
         const response = await fetch(`${API_URL}streetByMunicipe/${id}`);
         const data = await response.json();
         setStreet(data);
         setIsLoading(false);
+
+        //console.log(street.length);
+        if (street.length === 0) {
+          setNotFound(true);
+        }
       } catch (error) {
         console.error("Erro:", error);
         setIsLoading(false);
@@ -48,7 +56,7 @@ const Street = () => {
     fetchData();
   }, []);
 
-  //console.log(street);
+  console.log(street);
   const ListViewAtms = (id) => {
     navigation.navigate("ListViewAtms", { id });
   };
@@ -57,58 +65,75 @@ const Street = () => {
     return <View style={styles.container}></View>;
   }
   return (
-      <View style={styles.container}>
-        <HeaderOther title={"Ruas"} />
-        {isLoading ? (
-          <Loading />
-        ) : (
-          <>
-            <View style={styles.container}>
-              <FlatList
-                data={street}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    style={styles.item}
-                    onPress={() => ListViewAtms(item.id)}
+    <View style={styles.container}>
+      <HeaderOther title={"Ruas"} />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <View style={styles.container}>
+            <FlatList
+              data={street}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={styles.item}
+                  onPress={() => ListViewAtms(item.id)}
+                >
+                  <Image
+                    source={require("../../../assets/image/street.jpg")}
+                    style={styles.imagem}
+                  />
+                  <Text
+                    style={[
+                      styles.nomeAtm,
+                      { fontFamily: "Poppins_400Regular" },
+                    ]}
                   >
-                    <Image
-                      source={require("../../../assets/image/street.jpg")}
-                      style={styles.imagem}
-                    />
-                    <Text
-                      style={[
-                        styles.nomeAtm,
-                        { fontFamily: "Poppins_400Regular" },
-                      ]}
-                    >
-                      {item.name}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.flatListContent}
-              />
-            </View>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+              )}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.flatListContent}
+            />
 
-            <View style={styles.imageContainer}>
-              <Image
-                source={require("../../../assets/ui/Caminho_1.png")}
-                style={styles.image}
-              />
-              <Image
-                source={require("../../../assets/ui/Caminho_1.png")}
-                style={styles.image}
-              />
-              <Image
-                source={require("../../../assets/ui/Caminho_1.png")}
-                style={styles.image}
-              />
-            </View>
-          </>
-        )}
-      </View>
+            {notFound ? (
+              <View>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontFamily: "Poppins_700Bold",
+                    color: "red",
+                    fontSize: 16
+                  }}
+                >
+                  Sem Ruas Cadastradas
+                </Text>
+              </View>
+            ) : (
+              <View></View>
+            )}
+          </View>
+
+          <View style={styles.imageContainer}>
+            <Image
+              source={require("../../../assets/ui/Caminho_1.png")}
+              style={styles.image}
+            />
+            <Image
+              source={require("../../../assets/ui/Caminho_1.png")}
+              style={styles.image}
+            />
+            <Image
+              source={require("../../../assets/ui/Caminho_1.png")}
+              style={styles.image}
+            />
+          </View>
+        </>
+      )}
+    </View>
   );
 };
 
