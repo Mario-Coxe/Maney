@@ -11,6 +11,7 @@ import {
   requestForegroundPermissionsAsync,
   getCurrentPositionAsync,
 } from "expo-location";
+import { useRoute, useNavigation } from "@react-navigation/native";
 import { API_URL } from "../../../application.properties";
 import Loading from "./Loading";
 import {
@@ -23,6 +24,7 @@ import { Ionicons } from "@expo/vector-icons";
 const { width } = Dimensions.get("window");
 
 export default function AtmClose() {
+  const navigation = useNavigation();
   const [userLocation, setUserLocation] = useState(null);
   const [atms, setAtms] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -93,6 +95,14 @@ export default function AtmClose() {
     return name.substring(name.length - 3, name.length);
   };
 
+  const handleItemPress = (item) => {
+    navigation.navigate("MapAtmView", { atmData: item });
+  };
+
+  if (!fontsLoaded) {
+    return <View style={styles.container}></View>;
+  }
+
   const renderAtmItem = ({ item }) => {
     if (isLoading) {
       return null;
@@ -130,12 +140,11 @@ export default function AtmClose() {
         break;
     }
 
-    if (!fontsLoaded) {
-      return <View style={styles.container}></View>;
-    }
-
     return (
-      <TouchableOpacity style={styles.atmContainer}>
+      <TouchableOpacity
+        style={styles.atmContainer}
+        onPress={() => handleItemPress(item)}
+      >
         <View style={[styles.logoContainer, { backgroundColor: textColor }]}>
           <Text
             style={[

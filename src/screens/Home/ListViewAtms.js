@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import HeaderOther from "../components/HeaderOther";
-import { useRoute, useNavigation } from "@react-navigation/native"; // Importe useNavigation
+import { useRoute, useNavigation } from "@react-navigation/native"; 
 import { API_URL } from "../../../application.properties";
 import Loading from "../components/Loading";
 import {
@@ -21,7 +21,7 @@ import {
 export default function ListViewAtms() {
   const route = useRoute();
   const { id } = route.params;
-  const navigation = useNavigation(); // Obtenha a função de navegação
+  const navigation = useNavigation(); 
   const [atms, setAtms] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [nomeRua, setNomeRua] = useState("");
