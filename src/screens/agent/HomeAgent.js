@@ -17,7 +17,6 @@ const HomeAgent = () => {
       <View style={{ alignItems: "center" }}>
         <NavigationButton
           onPressHome={() => {}}
-          onPressChat={() => {}}
           onPressProfile={() => {}}
         />
       </View>

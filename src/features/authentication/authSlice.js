@@ -45,7 +45,7 @@ const authSlice = createSlice({
         //state.isloading = false;
         state.user = data;
         state.token = token;
-        console.warn("sucesso!");
+        //console.warn("sucesso!");
       })
       .addCase(login.rejected, (state, action) => {
         state.isloading = true;

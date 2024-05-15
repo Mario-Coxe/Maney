@@ -2,14 +2,16 @@ import React from "react";
 import { View, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
+import { API_URL } from "../../../application.properties";
+import { useNavigation } from "@react-navigation/native";
 
-const NavigationButton = ({ onPressHome, onPressChat, onPressProfile }) => {
+const NavigationButton = ({ onPressHome, onPressProfile }) => {
   const token = useSelector((state) => state.auth.token);
+  const navigation = useNavigation();
 
-  console.log(" token >> ", token);
   const onPressLogout = async () => {
     try {
-      const response = await fetch("http://192.168.43.63:8080/api/v1/logout", {
+      const response = await fetch(`${API_URL}logout`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -19,6 +21,7 @@ const NavigationButton = ({ onPressHome, onPressChat, onPressProfile }) => {
 
       if (response.ok) {
         Alert.alert("Sair", "Você foi desconectado com sucesso.");
+        navigation.navigate("Login");
       } else {
         Alert.alert("Sair", "Falha ao sair. Tente novamente.");
       }
@@ -33,11 +36,11 @@ const NavigationButton = ({ onPressHome, onPressChat, onPressProfile }) => {
       <TouchableOpacity style={styles.button} onPress={onPressHome}>
         <AntDesign name="home" size={20} color="white" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={onPressProfile}>
-        <AntDesign name="user" size={20} color="white" />
-      </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={onPressLogout}>
         <AntDesign name="logout" size={20} color="white" />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={onPressProfile}>
+        <AntDesign name="user" size={20} color="white" />
       </TouchableOpacity>
     </View>
   );
