@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, Alert } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
@@ -32,7 +32,11 @@ const LoginScreen = () => {
     try {
       const response = await dispatch(login({ phone, password }));
 
-      if (response.payload && response.payload.data && response.payload.data.length > 0) {
+      if (
+        response.payload &&
+        response.payload.data &&
+        response.payload.data.length > 0
+      ) {
         const userDataFromResponse = response.payload.data[0];
         setUserData(userDataFromResponse);
         if (userDataFromResponse.tipo_usuario === "cliente") {
@@ -41,10 +45,12 @@ const LoginScreen = () => {
           navigation.navigate("HomeAgent", { userData: userDataFromResponse });
         }
       } else {
-        throw new Error("Dados de login inválidos.");
+        Alert.alert("Usuário não encontrado", "Dados de login inválidos.");
+        //throw new Error("Dados de login inválidos.");
       }
     } catch (error) {
-      console.error("Erro durante o login:", error);
+      //console.error("Erro durante o login:", error);
+      Alert.alert("Erro", "Durante o login");
     }
   };
 
