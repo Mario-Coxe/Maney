@@ -77,5 +77,9 @@ export default StyleSheet.create({
     zIndex: 1,
   },
 
-
+  label: {
+    marginRight: 5,
+    fontSize: 14,
+    fontFamily: "Poppins_400Regular"
+  }
 });

@@ -43,8 +43,7 @@ const Street = () => {
         setStreet(data);
         setIsLoading(false);
 
-        //console.log(street.length);
-        if (street.length === 0) {
+        if (data.length === 0) {
           setNotFound(true);
         }
       } catch (error) {
@@ -106,7 +105,7 @@ const Street = () => {
                     textAlign: "center",
                     fontFamily: "Poppins_700Bold",
                     color: "red",
-                    fontSize: 16
+                    fontSize: 16,
                   }}
                 >
                   Sem Ruas Cadastradas

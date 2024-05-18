@@ -7,6 +7,7 @@ import {
   Switch,
   StyleSheet,
 } from "react-native";
+import { API_URL } from "../../../../application.properties";
 
 const ATMModal = ({
   isVisible,
@@ -31,9 +32,7 @@ const ATMModal = ({
   const handleSubmit = async () => {
     try {
       const response = await fetch(
-        `http://192.168.43.63:8080/api/v1/atmUpdate/${atmId}/${
-          hasCash ? 1 : 0
-        }/${hasPaper ? 1 : 0}`,
+        `${API_URL}atmUpdate/${atmId}/${hasCash ? 1 : 0}/${hasPaper ? 1 : 0}`,
         {
           method: "POST",
         }
