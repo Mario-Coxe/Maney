@@ -12,10 +12,6 @@ const HomeAgent = () => {
   const navigation = useNavigation();
   //console.log(userData);
 
-  const handleLogin = () => {
-    navigation.navigate("Profile");
-  };
-
   return (
     <View style={styles.container}>
       <Header title={"MANEY"} />
