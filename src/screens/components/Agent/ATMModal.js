@@ -19,7 +19,7 @@ const ATMModal = ({
   const [hasCash, setHasCash] = useState(_hasCash);
   const [hasPaper, setHasPaper] = useState(_hasPaper);
 
-  console.log(hasCash, hasPaper);
+  //console.log(hasCash, hasPaper);
   const toggleCash = () => {
     setHasCash(!hasCash);
   };
