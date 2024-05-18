@@ -45,7 +45,7 @@ const LoginScreen = () => {
           navigation.navigate("HomeAgent", { userData: userDataFromResponse });
         }
       } else {
-        Alert.alert("Usuário não encontrado", "Dados de login inválidos.");
+        //Alert.alert("Usuário não encontrado", "Dados de login inválidos.");
         //throw new Error("Dados de login inválidos.");
       }
     } catch (error) {

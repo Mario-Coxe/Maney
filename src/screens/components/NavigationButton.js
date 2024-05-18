@@ -20,10 +20,10 @@ const NavigationButton = ({ onPressHome, onPressProfile }) => {
       });
 
       if (response.ok) {
-        Alert.alert("Sair", "Você foi desconectado com sucesso.");
+        Alert.alert("Saindo", "Você foi desconectado com sucesso.");
         navigation.navigate("Login");
       } else {
-        Alert.alert("Sair", "Falha ao sair. Tente novamente.");
+        Alert.alert("Erro", "Falha ao sair. Tente novamente.");
       }
     } catch (error) {
       console.error("Error logging out:", error);
@@ -33,9 +33,9 @@ const NavigationButton = ({ onPressHome, onPressProfile }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={onPressHome}>
+      {/* <TouchableOpacity style={styles.button} onPress={onPressHome}>
         <AntDesign name="home" size={20} color="white" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity style={styles.button} onPress={onPressLogout}>
         <AntDesign name="logout" size={20} color="white" />
       </TouchableOpacity>

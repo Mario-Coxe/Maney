@@ -4,11 +4,17 @@ import Header from "../components/Header";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import ListMyAtm from "../components/Agent/ListMyAtm";
 import NavigationButton from "../components/NavigationButton";
+import Profile from "./Profile";
+
 const HomeAgent = () => {
   const route = useRoute();
   const { userData } = route.params;
+  const navigation = useNavigation();
+  //console.log(userData);
 
-  //console.log(userData.id);
+  const handleLogin = () => {
+    navigation.navigate("Profile");
+  };
 
   return (
     <View style={styles.container}>
@@ -16,8 +22,9 @@ const HomeAgent = () => {
       <ListMyAtm id={userData.id} name={userData.name} />
       <View style={{ alignItems: "center" }}>
         <NavigationButton
-          onPressHome={() => {}}
-          onPressProfile={() => {}}
+          onPressProfile={() => {
+            navigation.navigate("Profile", { userData: userData });
+          }}
         />
       </View>
     </View>
