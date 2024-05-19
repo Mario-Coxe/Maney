@@ -1,26 +1,16 @@
 import React from "react";
 import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { useNavigation } from '@react-navigation/native';
 
-const Search = () => {
-  const navigation = useNavigation();
-
-  const handleSearchPress = () => {
-    navigation.navigate('ListAllAtms');
-  };
-
+const SearchAtm = () => {
   return (
     <View style={styles.barraDeBusca}>
-      <TouchableOpacity activeOpacity={0.1} onPress={handleSearchPress}>
+      <TouchableOpacity activeOpacity={0.1}>
         <View style={styles.caixaBotaoBusca}>
           <FontAwesome5 name="search" color="#0E7B46" />
         </View>
       </TouchableOpacity>
-      <TextInput 
-        style={styles.input} 
-        onFocus={handleSearchPress} 
-      />
+      <TextInput style={styles.input} />
       <TouchableOpacity activeOpacity={0.6}>
         <View style={styles.caixaBotaoConfiguracoes}>
           <FontAwesome5 name="filter" color="#0E7B46" size={20} />
@@ -62,4 +52,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Search;
+export default SearchAtm;
