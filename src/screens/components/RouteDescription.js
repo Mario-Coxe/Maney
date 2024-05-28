@@ -1,26 +1,32 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import {
-  useFonts,
-  Poppins_700Bold,
-  Poppins_400Regular,
-} from "@expo-google-fonts/poppins";
-
+import { useFonts, Poppins_700Bold, Poppins_400Regular } from "@expo-google-fonts/poppins";
+import Loading from "./Loading";
 const RouteDescription = ({ title, distance, duration }) => {
   const [fontsLoaded] = useFonts({
     Poppins_700Bold,
     Poppins_400Regular,
   });
+
   const navigation = useNavigation();
 
   const handleGoBack = () => {
     navigation.goBack();
   };
+
   if (!fontsLoaded) {
     return <View style={styles.container}></View>;
   }
+
+  if (!distance) {
+    return (
+      <View style={styles.header}>
+         <Loading/>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.header}>
       <View style={styles.title}>
@@ -42,13 +48,6 @@ const RouteDescription = ({ title, distance, duration }) => {
           Distância:
           <Text style={{ fontFamily: "Poppins_700Bold" }}> {distance}</Text> Km
         </Text>
-
-        {/* <Text
-          style={[styles.distanceText, { fontFamily: "Poppins_400Regular" }]}
-        >
-          Duração:
-          <Text style={{ fontFamily: "Poppins_700Bold" }}> {duration}</Text> Km
-        </Text> */}
       </View>
     </View>
   );

@@ -8,7 +8,6 @@ import LoginScreen from "./Autentication/LoginScreen";
 import ForgotPasswordScreen from "./Autentication/ForgotPasswordScreen";
 import OTPScreen from "./Autentication/OTPScreen";
 import ResetPasswordScreen from "./Autentication/ResetPasswordScreen";
-
 import Home from "./Home/Home";
 import Street from "./Home/Street";
 import Municipe from "./components/ListMunicipeLuanda";
@@ -28,7 +27,7 @@ function Navegation() {
   return (
     <Provider store={Store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Splash">
           <Stack.Screen
             name="ListAllAtms"
             component={ListAllAtms}
