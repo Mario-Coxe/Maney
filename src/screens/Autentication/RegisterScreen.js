@@ -37,7 +37,7 @@ const RegisterScreen = () => {
 
   const handleRegister = () => {
     if (password !== confirmPassword) {
-      Alert.alert("Erro", "As senhas não coincidem.");
+      Alert.alert("Erro", "As senhas não iguais.");
       return;
     }
 
@@ -49,7 +49,7 @@ const RegisterScreen = () => {
         tipo_usuario: "cliente",
       })
       .then((response) => {
-        console.log("Registro bem-sucedido:", response.data);
+        //console.log("Registro bem-sucedido:", response.data);
         Alert.alert("Sucesso", "Usuário registrado com sucesso!");
 
         setUsername("");
@@ -71,7 +71,7 @@ const RegisterScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+  <View style={styles.container}>
       <ScrollView>
         <View style={styles.cardContainer}>
           <Text

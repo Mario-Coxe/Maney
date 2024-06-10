@@ -206,6 +206,7 @@ export default function AtmClose() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.atmsproximos}>ATMs MAIS PRÓXIMOS</Text>
       {isLoading ? (
         <Loading />
       ) : (
@@ -271,4 +272,10 @@ const styles = StyleSheet.create({
   flatListContent: {
     paddingBottom: 20,
   },
+  atmsproximos: {
+    textAlign: "center",
+    fontFamily: "Poppins_700Bold",
+    color: "#fff",
+    fontSize: 14
+}
 });

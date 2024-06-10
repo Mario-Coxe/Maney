@@ -23,11 +23,15 @@ const NavigationButton = ({ onPressHome, onPressProfile }) => {
         Alert.alert("Saindo", "Você foi desconectado com sucesso.");
         navigation.navigate("Login");
       } else {
-        Alert.alert("Erro", "Falha ao sair. Tente novamente.");
+       // Alert.alert("Erro", "Falha ao sair. Tente novamente.");
+        navigation.navigate("Login");
+
       }
     } catch (error) {
       console.error("Error logging out:", error);
-      Alert.alert("Sair", "Ocorreu um erro. Tente novamente.");
+     // Alert.alert("Sair", "Ocorreu um erro. Tente novamente.");
+        navigation.navigate("Login");
+
     }
   };
 

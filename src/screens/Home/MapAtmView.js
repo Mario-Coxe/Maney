@@ -27,7 +27,7 @@ const MapAtmView = () => {
     latitude: Number(longitude),
     longitude: Number(latitude),
   };
-
+    
   useEffect(() => {
     requestLocationPermission();
   }, []);

@@ -19,6 +19,7 @@ import {
 } from "@expo-google-fonts/poppins";
 import { FontAwesome5 } from "@expo/vector-icons";
 
+
 export default function ListAllAtms() {
   const navigation = useNavigation();
   const [atms, setAtms] = useState([]);
@@ -35,7 +36,7 @@ export default function ListAllAtms() {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `http://192.168.43.63:8080/api/v1/atms/search/${address}`
+        `${API_URL}atms/search/${address}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");
