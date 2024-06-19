@@ -1,0 +1,23 @@
+# Node modules
+node_modules
+
+# Adonis directory for storing tmp files
+tmp
+tmp_2
+# Environment variables, never commit this file
+.env
+._env
+
+# The development sqlite file
+database/*.sqli
+
+#public /upload
+public/
+
+#Files ps2
+*.ps2
+.vscode/settings.json
+.vscode/*
+.vscode/settings.json
+
+package-lock.json
