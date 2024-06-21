@@ -1,23 +1,16 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Alert} from "react-native";
-import {
-  useFonts,
-  Poppins_700Bold,
-} from "@expo-google-fonts/poppins";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import { useFonts, Poppins_700Bold } from "@expo-google-fonts/poppins";
 import { AntDesign } from "@expo/vector-icons";
 import { API_URL } from "../../../application.properties";
 import { useSelector } from "react-redux";
-
-
 
 const Header = ({ title }) => {
   const [fontsLoaded] = useFonts({
     Poppins_700Bold,
   });
 
-
-
-    const token = useSelector((state) => state.auth.token);
+  const token = useSelector((state) => state.auth.token);
 
   const onPressLogout = async () => {
     try {
@@ -30,21 +23,20 @@ const Header = ({ title }) => {
       });
 
       if (response.ok) {
-        Alert.alert("Saindo", "Você foi desconectado com sucesso.");
         navigation.navigate("Login");
+        Alert.alert("Saindo", "Você foi desconectado com sucesso.");
       } else {
         //Alert.alert("Erro", "Falha ao sair. Tente novamente.");
         navigation.navigate("Login");
       }
     } catch (error) {
       //console.error("Error logging out:", error);
-     // Alert.alert("Sair", "Ocorreu um erro. Tente novamente.");
-        navigation.navigate("Login");
-
+      // Alert.alert("Sair", "Ocorreu um erro. Tente novamente.");
+      navigation.navigate("Login");
     }
   };
 
-    if (!fontsLoaded) {
+  if (!fontsLoaded) {
     return <View style={styles.container}></View>;
   }
 
@@ -53,10 +45,9 @@ const Header = ({ title }) => {
       <Text style={[styles.headerText, { fontFamily: "Poppins_700Bold" }]}>
         {title}
       </Text>
-     <TouchableOpacity style={styles.button} onPress={onPressLogout}>
+      <TouchableOpacity style={styles.button} onPress={onPressLogout}>
         <AntDesign name="logout" size={20} color="white" />
       </TouchableOpacity>
-     
     </View>
   );
 };

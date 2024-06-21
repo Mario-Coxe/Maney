@@ -39,7 +39,7 @@ const SplashScreen = () => {
             { fontFamily: "Poppins_700Bold", fontSize: 50 },
           ]}
         >
-          MANEY
+          Money
         </Text>
       </Text>
     </View>
