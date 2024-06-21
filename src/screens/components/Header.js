@@ -4,14 +4,16 @@ import { useFonts, Poppins_700Bold } from "@expo-google-fonts/poppins";
 import { AntDesign } from "@expo/vector-icons";
 import { API_URL } from "../../../application.properties";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 const Header = ({ title }) => {
   const [fontsLoaded] = useFonts({
     Poppins_700Bold,
   });
-
+  const navigation = useNavigation();
   const token = useSelector((state) => state.auth.token);
 
+  console.log("token: ", token);
   const onPressLogout = async () => {
     try {
       const response = await fetch(`${API_URL}logout`, {
@@ -26,12 +28,9 @@ const Header = ({ title }) => {
         navigation.navigate("Login");
         Alert.alert("Saindo", "Você foi desconectado com sucesso.");
       } else {
-        //Alert.alert("Erro", "Falha ao sair. Tente novamente.");
         navigation.navigate("Login");
       }
     } catch (error) {
-      //console.error("Error logging out:", error);
-      // Alert.alert("Sair", "Ocorreu um erro. Tente novamente.");
       navigation.navigate("Login");
     }
   };
