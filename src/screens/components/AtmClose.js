@@ -77,7 +77,7 @@ export default function AtmClose() {
           setIsLoading(false);
         }
       } catch (error) {
-        console.error("Erro ao buscar os caixas eletrônicos:", error);
+        //console.error("Erro ao buscar os caixas eletrônicos:", error);
         setIsLoading(false);
       }
     };

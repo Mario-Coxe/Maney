@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import HeaderOther from "../components/HeaderOther";
-import { useRoute, useNavigation } from "@react-navigation/native"; 
+import { useRoute, useNavigation } from "@react-navigation/native";
 import { API_URL } from "../../../application.properties";
 import Loading from "../components/Loading";
 import {
@@ -21,7 +21,7 @@ import {
 export default function ListViewAtms() {
   const route = useRoute();
   const { id } = route.params;
-  const navigation = useNavigation(); 
+  const navigation = useNavigation();
   const [atms, setAtms] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [nomeRua, setNomeRua] = useState("");
@@ -41,6 +41,7 @@ export default function ListViewAtms() {
         }
         const data = await response.json();
         setAtms(data);
+        //console.log("data", data);
         setIsLoading(false);
         if (data.length > 0) {
           const nomeRuaPrimeiroAtm = data[0].street.name;
@@ -48,7 +49,7 @@ export default function ListViewAtms() {
         }
       } catch (error) {
         //console.error("Erro:", error);
-        setIsLoading(false);
+        setIsLoading(true);
       }
     };
 
@@ -122,7 +123,7 @@ export default function ListViewAtms() {
               { color: textColor, fontFamily: "Poppins_700Bold" },
             ]}
           >
-            {renderLogoBanco(item.name)}
+            {renderLogoBanco(item.bank.slug)}
           </Text>
         </View>
         <View style={styles.textContainer}>
@@ -134,36 +135,47 @@ export default function ListViewAtms() {
           >
             {item.name}
           </Text>
-        </View>
-        <View style={styles.textContainer}>
           <View style={styles.iconContainer}>
-            <View style={styles.dinheiroContainer}>
-              {item.has_cash ? (
-                <>
-                  <Text style={styles.values}>Dinheiro</Text>
-                  <Ionicons name="checkmark" size={20} color="green" />
-                </>
-              ) : (
-                <>
-                  <Text style={styles.values}>Dinheiro</Text>
-                  <Ionicons name="close" size={20} color="red" />
-                </>
-              )}
+            <View style={styles.statusContainer}>
+              <Ionicons
+                name="cash-outline"
+                size={24}
+                color="#4CAF50"
+                style={styles.icon}
+              />
+              <Text style={styles.values}>Dinheiro</Text>
+              <Ionicons
+                name={
+                  item.has_cash
+                    ? "checkmark-circle-outline"
+                    : "close-circle-outline"
+                }
+                size={24}
+                color={item.has_cash ? "green" : "red"}
+                style={styles.iconStatus}
+              />
+              <Text style={styles.quantidade}>{item.how_many_cash}</Text>
             </View>
-            <View style={styles.papelContainer}>
-              {item.has_paper ? (
-                <>
-                  <Text style={styles.values}>Papel</Text>
-                  <Ionicons name="checkmark" size={20} color="green" />
-                </>
-              ) : (
-                <>
-                  <Text style={styles.values}>Papel</Text>
-                  <Ionicons name="close" size={20} color="red" />
-                </>
-              )}
+            <View style={styles.statusContainer}>
+              <Ionicons
+                name="document-outline"
+                size={24}
+                color="#4CAF50"
+                style={styles.icon}
+              />
+              <Text style={styles.values}>Papel</Text>
+              <Ionicons
+                name={
+                  item.has_paper
+                    ? "checkmark-circle-outline"
+                    : "close-circle-outline"
+                }
+                size={24}
+                color={item.has_paper ? "green" : "red"}
+                style={styles.iconStatus}
+              />
+              <Text style={styles.quantidade}>{item.how_many_paper}</Text>
             </View>
-            <View style={styles.distanciaContainer}></View>
           </View>
         </View>
       </TouchableOpacity>
@@ -204,14 +216,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "white",
     marginVertical: 15,
-    borderRadius: 10,
-    padding: 10,
+    borderRadius: 0,
+    padding: 15,
     paddingHorizontal: 20,
+    shadowColor: "#0E7B46",
+    shadowOffset: { width: 10, height: 2 },
+    shadowOpacity: 2,
+    shadowRadius: 0,
+    elevation: 15,
   },
   logo: {
     backgroundColor: "white",
-    borderRadius: 50,
-    borderColor: "black",
+    borderRadius: 25,
+    borderColor: "#ddd",
     borderWidth: 1,
     width: 50,
     height: 50,
@@ -223,46 +240,81 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-    marginLeft: 15,
+    marginLeft: 20,
   },
   textoBanco: {
     fontSize: 15,
-    marginBottom: 5,
-  },
-  textoDistancia: {
-    fontSize: 16,
+    marginBottom: 10,
   },
   iconContainer: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
   },
-  dinheiroContainer: {
+  statusContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginRight: 20,
   },
-  papelContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  distanciaContainer: {
-    flexDirection: "row",
-    marginTop: 50,
-    right: 300,
+  quantidade: {
+    marginLeft: 5,
+    fontSize: 14,
+    color: "#666",
   },
   nomeRuaContainer: {
-    marginTop: 10,
+    marginTop: 20,
+    marginBottom: 10,
   },
   nomeRua: {
     textAlign: "center",
-    justifyContent: "center",
-    fontSize: 15,
+    fontSize: 18,
   },
   values: {
-    fontSize: 12,
+    fontSize: 15,
     fontFamily: "Poppins_400Regular",
+    marginRight: 5,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   flatListContent: {
-    paddingBottom: 20, // Adicione margem inferior para a FlatList
+    paddingBottom: 20,
+  },
+  iconContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  statusContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f0f0f0",
+    padding: 10,
+    borderRadius: 10,
+    marginRight: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  values: {
+    fontSize: 16,
+    fontFamily: "Poppins_400Regular",
+    marginLeft: 5,
+  },
+  quantidade: {
+    marginLeft: 5,
+    fontSize: 16,
+    color: "#666",
+  },
+  icon: {
+    marginRight: 5,
+  },
+  iconStatus: {
+    marginLeft: 5,
   },
 });
