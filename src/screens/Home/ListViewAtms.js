@@ -67,7 +67,7 @@ export default function ListViewAtms() {
   };
 
   const renderLogoBanco = (name) => {
-    return name.substring(name.length - 3, name.length);
+    return name;
   };
 
   const RenderItem = ({ item }) => {
@@ -75,9 +75,10 @@ export default function ListViewAtms() {
       return null;
     }
 
+    //console.log(item);
     let textColor = "#00FF00";
 
-    switch (renderLogoBanco(item.name)) {
+    switch (renderLogoBanco(item.bank.slug)) {
       case "BAI":
         textColor = "blue";
         break;
@@ -130,7 +131,7 @@ export default function ListViewAtms() {
           <Text
             style={[
               styles.textoBanco,
-              { color: textColor, fontFamily: "Poppins_700Bold" },
+              { color: "#0E7B46", fontFamily: "Poppins_700Bold" },
             ]}
           >
             {item.name}
@@ -186,7 +187,12 @@ export default function ListViewAtms() {
     <View style={styles.container}>
       <HeaderOther />
       <View style={styles.nomeRuaContainer}>
-        <Text style={[styles.nomeRua, { fontFamily: "Poppins_700Bold" }]}>
+        <Text
+          style={[
+            styles.nomeRua,
+            { fontFamily: "Poppins_700Bold", textTransform: "uppercase" },
+          ]}
+        >
           {nomeRua}
         </Text>
       </View>
@@ -267,7 +273,7 @@ const styles = StyleSheet.create({
   },
   nomeRua: {
     textAlign: "center",
-    fontSize: 18,
+    fontSize: 15,
   },
   values: {
     fontSize: 15,
@@ -302,7 +308,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   values: {
-    fontSize: 16,
+    fontSize: 15,
     fontFamily: "Poppins_400Regular",
     marginLeft: 5,
   },

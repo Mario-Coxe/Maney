@@ -10,7 +10,7 @@ import AtmClose from "../components/AtmClose";
 const Home = () => {
   return (
     <View style={styles.container}>
-      <Header title={"Money"} />
+      <Header title={"MONEY"} />
       <ScrollView>
         <CarouselPublicidade />
         <Search />

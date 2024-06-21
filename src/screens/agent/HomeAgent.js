@@ -14,7 +14,7 @@ const HomeAgent = () => {
 
   return (
     <View style={styles.container}>
-      <Header title={"Money"} />
+      <Header title={"MONEY"} />
       <ListMyAtm id={userData.id} name={userData.name} />
       <View style={{ alignItems: "center" }}>
         <NavigationButton
