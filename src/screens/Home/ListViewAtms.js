@@ -23,7 +23,7 @@ export default function ListViewAtms() {
   const { id } = route.params;
   const navigation = useNavigation();
   const [atms, setAtms] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [nomeRua, setNomeRua] = useState("");
 
   const [fontsLoaded] = useFonts({
@@ -33,7 +33,7 @@ export default function ListViewAtms() {
 
   useEffect(() => {
     const fetchData = async () => {
-      //setIsLoading(true);
+      //setIsLoading(false);
       try {
         const response = await fetch(`${API_URL}atms/ByStreet/${id}`);
         if (!response.ok) {

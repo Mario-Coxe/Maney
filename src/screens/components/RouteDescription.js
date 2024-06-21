@@ -1,7 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { useFonts, Poppins_700Bold, Poppins_400Regular } from "@expo-google-fonts/poppins";
+import {
+  useFonts,
+  Poppins_700Bold,
+  Poppins_400Regular,
+} from "@expo-google-fonts/poppins";
 import Loading from "./Loading";
 const RouteDescription = ({ title, distance, duration }) => {
   const [fontsLoaded] = useFonts({
@@ -22,7 +26,7 @@ const RouteDescription = ({ title, distance, duration }) => {
   if (!distance) {
     return (
       <View style={styles.header}>
-         <Loading/>
+        <Loading />
       </View>
     );
   }
@@ -61,9 +65,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
     borderBottomEndRadius: 10,
     borderBottomStartRadius: 10,
+    elevation: 20,
+    shadowColor: "#0E7B46",
+    shadowOffset: { width: 10, height: 2 },
+    shadowOpacity: 2,
   },
   headerText: {
     color: "#000",
