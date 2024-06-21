@@ -67,18 +67,23 @@ export default function AtmClose() {
 
   useEffect(() => {
     const fetchClosestAtms = async () => {
+      setIsLoading(true);
+
       try {
         if (userLocation) {
           const response = await fetch(
             `${API_URL}closest?latitude=${userLocation.latitude}&longitude=${userLocation.longitude}`
           );
+          if (!response.ok) {
+            <Loading />;
+          }
           const data = await response.json();
           setAtms(data);
           setIsLoading(false);
         }
       } catch (error) {
         //console.error("Erro ao buscar os caixas eletrônicos:", error);
-        setIsLoading(false);
+        setIsLoading(true);
       }
     };
 
@@ -205,11 +210,9 @@ export default function AtmClose() {
   // console.log(atms);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.atmsproximos}>ATMs MAIS PRÓXIMOS</Text>
-      {isLoading ? (
-        <Loading />
-      ) : (
+    !isLoading && (
+      <View style={styles.container}>
+        <Text style={styles.atmsproximos}>ATMs MAIS PRÓXIMOS</Text>
         <FlatList
           data={atms}
           renderItem={renderAtmItem}
@@ -217,8 +220,8 @@ export default function AtmClose() {
           showsVerticalScrollIndicator={true}
           contentContainerStyle={styles.flatListContent}
         />
-      )}
-    </View>
+      </View>
+    )
   );
 }
 
@@ -276,6 +279,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Poppins_700Bold",
     color: "#fff",
-    fontSize: 14
-}
+    fontSize: 14,
+  },
 });
