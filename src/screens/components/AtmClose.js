@@ -1,29 +1,13 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Dimensions,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
-import {
-  requestForegroundPermissionsAsync,
-  getCurrentPositionAsync,
-} from "expo-location";
-import { useRoute, useNavigation } from "@react-navigation/native";
+import { View, StyleSheet, Text, TouchableOpacity, FlatList } from "react-native";
+import { requestForegroundPermissionsAsync, getCurrentPositionAsync } from "expo-location";
+import { useNavigation } from "@react-navigation/native";
 import { API_URL } from "../../../application.properties";
 import Loading from "./Loading";
-import {
-  useFonts,
-  Poppins_700Bold,
-  Poppins_400Regular,
-} from "@expo-google-fonts/poppins";
+import { useFonts, Poppins_700Bold, Poppins_400Regular } from "@expo-google-fonts/poppins";
 import { Ionicons } from "@expo/vector-icons";
 
-const { width } = Dimensions.get("window");
-
-export default function AtmClose() {
+const AtmClose = () => {
   const navigation = useNavigation();
   const [userLocation, setUserLocation] = useState(null);
   const [atms, setAtms] = useState([]);
@@ -82,7 +66,7 @@ export default function AtmClose() {
           setIsLoading(false);
         }
       } catch (error) {
-        //console.error("Erro ao buscar os caixas eletrônicos:", error);
+        console.error("Erro ao buscar os caixas eletrônicos:", error);
         setIsLoading(true);
       }
     };
@@ -103,10 +87,6 @@ export default function AtmClose() {
   const handleItemPress = (item) => {
     navigation.navigate("MapAtmView", { atmData: item });
   };
-
-  if (!fontsLoaded) {
-    return <View style={styles.container}></View>;
-  }
 
   const renderAtmItem = ({ item }) => {
     if (isLoading) {
@@ -207,23 +187,23 @@ export default function AtmClose() {
     );
   };
 
-  // console.log(atms);
+  if (!fontsLoaded) {
+    return <Loading />;
+  }
 
   return (
-    !isLoading && (
-      <View style={styles.container}>
-        <Text style={styles.atmsproximos}>ATMs MAIS PRÓXIMOS</Text>
-        <FlatList
-          data={atms}
-          renderItem={renderAtmItem}
-          keyExtractor={(item) => item.id.toString()}
-          showsVerticalScrollIndicator={true}
-          contentContainerStyle={styles.flatListContent}
-        />
-      </View>
-    )
+    <View style={styles.container}>
+      <Text style={styles.atmsproximos}>ATMs MAIS PRÓXIMOS</Text>
+      <FlatList
+        data={atms}
+        renderItem={renderAtmItem}
+        keyExtractor={(item) => item.id.toString()}
+        showsVerticalScrollIndicator={true}
+        contentContainerStyle={styles.flatListContent}
+      />
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -282,3 +262,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
+
+export default AtmClose;
