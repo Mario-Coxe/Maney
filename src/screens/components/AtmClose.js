@@ -1,10 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, FlatList, ScrollView } from "react-native";
-import { requestForegroundPermissionsAsync, getCurrentPositionAsync } from "expo-location";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+} from "react-native";
+import {
+  requestForegroundPermissionsAsync,
+  getCurrentPositionAsync,
+} from "expo-location";
 import { useNavigation } from "@react-navigation/native";
 import { API_URL } from "../../../application.properties";
 import Loading from "./Loading";
-import { useFonts, Poppins_700Bold, Poppins_400Regular } from "@expo-google-fonts/poppins";
+import {
+  useFonts,
+  Poppins_700Bold,
+  Poppins_400Regular,
+} from "@expo-google-fonts/poppins";
 import { Ionicons } from "@expo/vector-icons";
 
 const AtmClose = () => {
@@ -131,31 +145,13 @@ const AtmClose = () => {
         onPress={() => handleItemPress(item)}
       >
         <View style={[styles.logoContainer, { backgroundColor: textColor }]}>
-          <Text
-            style={[
-              styles.logoText,
-              { fontFamily: "Poppins_700Bold", fontSize: 13, color: "#fff" },
-            ]}
-          >
-            {renderLogoBanco(item.name)}
-          </Text>
+          <Text style={styles.logoText}>{renderLogoBanco(item.name)}</Text>
         </View>
         <View style={styles.infoContainer}>
-          <Text
-            style={[
-              styles.addressText,
-              { fontFamily: "Poppins_700Bold", fontSize: 12, color: "#000" },
-            ]}
-          >
-            {item.name}, {item.address}
-          </Text>
+          <Text style={styles.nameText}>{item.name}</Text>
+          <Text style={styles.addressText}>{item.address}</Text>
           <View style={styles.statusContainer}>
-            <Text
-              style={[
-                styles.statusText,
-                { fontFamily: "Poppins_400Regular", fontSize: 13 },
-              ]}
-            >
+            <Text style={styles.statusText}>
               Dinheiro:{" "}
               {item.has_cash ? (
                 <Ionicons name="checkmark" size={20} color="green" />
@@ -163,12 +159,7 @@ const AtmClose = () => {
                 <Ionicons name="close" size={20} color="red" />
               )}
             </Text>
-            <Text
-              style={[
-                styles.statusText,
-                { fontFamily: "Poppins_400Regular", fontSize: 13 },
-              ]}
-            >
+            <Text style={styles.statusText}>
               Papel:{" "}
               {item.has_paper ? (
                 <Ionicons name="checkmark" size={20} color="green" />
@@ -178,11 +169,7 @@ const AtmClose = () => {
             </Text>
           </View>
         </View>
-        <Text
-          style={[styles.distanceText, { fontFamily: "Poppins_400Regular" }]}
-        >
-          {item.distance} km
-        </Text>
+        <Text style={styles.distanceText}>{item.distance} km</Text>
       </TouchableOpacity>
     );
   };
@@ -206,7 +193,7 @@ const AtmClose = () => {
       </View>
     )
   );
-}  
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -216,12 +203,17 @@ const styles = StyleSheet.create({
   },
   atmContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "white",
-    marginHorizontal: 10,
-    padding: 10,
+    backgroundColor: "#fff",
+    marginHorizontal: 20,
+    marginVertical: 10,
+    padding: 15,
     borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
   },
   logoContainer: {
     width: 50,
@@ -229,43 +221,41 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     justifyContent: "center",
     alignItems: "center",
+    marginRight: 15,
   },
   logoText: {
-    fontSize: 20,
     fontFamily: "Poppins_700Bold",
-    color: "white",
+    fontSize: 18,
+    color: "#fff",
   },
   infoContainer: {
     flex: 1,
-    marginLeft: 10,
+  },
+  nameText: {
+    fontFamily: "Poppins_700Bold",
+    fontSize: 14,
+    color: "#333",
+    marginBottom: 5,
   },
   addressText: {
-    color: "black",
+    fontFamily: "Poppins_400Regular",
+    fontSize: 12,
+    color: "#777",
+    marginBottom: 10,
   },
   statusContainer: {
     flexDirection: "row",
-    marginTop: 5,
+    justifyContent: "space-between",
   },
   statusText: {
-    marginRight: 10,
     fontFamily: "Poppins_400Regular",
-    fontSize: 13,
-    color: "black",
+    fontSize: 12,
+    color: "#333",
   },
   distanceText: {
     fontFamily: "Poppins_400Regular",
-    fontSize: 13,
-    color: "black",
-  },
-  flatListContent: {
-    paddingHorizontal: 10,
-  },
-  atmsproximos: {
-    textAlign: "center",
-    fontFamily: "Poppins_700Bold",
-    color: "#0E7B46",
-    fontSize: 18,
-    marginBottom: 10,
+    fontSize: 12,
+    color: "#333",
   },
 });
 
