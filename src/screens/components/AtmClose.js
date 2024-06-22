@@ -40,10 +40,10 @@ const AtmClose = () => {
     try {
       const { status } = await requestForegroundPermissionsAsync();
       if (status === "granted") {
-        console.log("Location permission granted");
+        //console.log("Location permission granted");
         getCurrentLocation();
       } else {
-        console.log("Location permission denied");
+        //console.log("Location permission denied");
       }
     } catch (err) {
       console.warn(err);
@@ -53,13 +53,13 @@ const AtmClose = () => {
   const getCurrentLocation = async () => {
     try {
       const location = await getCurrentPositionAsync({});
-      console.log("Current position:", location.coords);
+      //console.log("Current position:", location.coords);
       setUserLocation({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       });
     } catch (error) {
-      console.log("Error getting current location:", error);
+     // console.log("Error getting current location:", error);
     }
   };
 
@@ -80,7 +80,7 @@ const AtmClose = () => {
           setIsLoading(false);
         }
       } catch (error) {
-        console.error("Erro ao buscar os caixas eletrônicos:", error);
+        //console.error("Erro ao buscar os caixas eletrônicos:", error);
         setIsLoading(true);
       }
     };
@@ -95,7 +95,7 @@ const AtmClose = () => {
   }, [userLocation]);
 
   const renderLogoBanco = (name) => {
-    return name.substring(name.length - 3, name.length);
+    return name;
   };
 
   const handleItemPress = (item) => {
@@ -107,9 +107,10 @@ const AtmClose = () => {
       return null;
     }
 
+    //console.log(item);
     let textColor = "#00FF00";
 
-    switch (renderLogoBanco(item.name)) {
+    switch (renderLogoBanco(item.bank.slug)) {
       case "BAI":
         textColor = "blue";
         break;
@@ -145,28 +146,52 @@ const AtmClose = () => {
         onPress={() => handleItemPress(item)}
       >
         <View style={[styles.logoContainer, { backgroundColor: textColor }]}>
-          <Text style={styles.logoText}>{renderLogoBanco(item.name)}</Text>
+          <Text style={styles.logoText}>{renderLogoBanco(item.bank.slug)}</Text>
         </View>
         <View style={styles.infoContainer}>
           <Text style={styles.nameText}>{item.name}</Text>
           <Text style={styles.addressText}>{item.address}</Text>
           <View style={styles.statusContainer}>
-            <Text style={styles.statusText}>
-              Dinheiro:{" "}
-              {item.has_cash ? (
-                <Ionicons name="checkmark" size={20} color="green" />
-              ) : (
-                <Ionicons name="close" size={20} color="red" />
-              )}
-            </Text>
-            <Text style={styles.statusText}>
-              Papel:{" "}
-              {item.has_paper ? (
-                <Ionicons name="checkmark" size={20} color="green" />
-              ) : (
-                <Ionicons name="close" size={20} color="red" />
-              )}
-            </Text>
+            <View style={styles.statusItem}>
+              {/* <Ionicons
+                name="cash-outline"
+                size={24}
+                color="#4CAF50"
+                style={styles.icon}
+              /> */}
+              <Text style={styles.values}>Dinheiro: </Text>
+              <Ionicons
+                name={
+                  item.has_cash
+                    ? "checkmark-circle-outline"
+                    : "close-circle-outline"
+                }
+                size={24}
+                color={item.has_cash ? "green" : "red"}
+                style={styles.iconStatus}
+              />
+              <Text style={styles.quantidade}>{item.how_many_cash}</Text>
+            </View>
+            <View style={styles.statusItem}>
+              {/* <Ionicons
+                name="document-outline"
+                size={24}
+                color="#4CAF50"
+                style={styles.icon}
+              /> */}
+              <Text style={styles.values}>Papel:</Text>
+              <Ionicons
+                name={
+                  item.has_paper
+                    ? "checkmark-circle-outline"
+                    : "close-circle-outline"
+                }
+                size={24}
+                color={item.has_paper ? "green" : "red"}
+                style={styles.iconStatus}
+              />
+              <Text style={styles.quantidade}>{item.how_many_paper}</Text>
+            </View>
           </View>
         </View>
         <Text style={styles.distanceText}>{item.distance} km</Text>
@@ -247,7 +272,24 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  statusText: {
+  statusItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 10,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  values: {
+    fontFamily: "Poppins_400Regular",
+    fontSize: 12,
+    color: "#333",
+    marginRight: 5,
+  },
+  iconStatus: {
+    marginRight: 5,
+  },
+  quantidade: {
     fontFamily: "Poppins_400Regular",
     fontSize: 12,
     color: "#333",

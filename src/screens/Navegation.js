@@ -27,7 +27,7 @@ function Navegation() {
   return (
     <Provider store={Store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Splash">
+        <Stack.Navigator initialRouteName="Home">
           <Stack.Screen
             name="ListAllAtms"
             component={ListAllAtms}
