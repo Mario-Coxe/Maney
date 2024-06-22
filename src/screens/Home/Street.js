@@ -108,7 +108,7 @@ const Street = () => {
                     fontSize: 16,
                   }}
                 >
-                  Sem Ruas Cadastradas
+                  SEM RUAS CADASTRADAS
                 </Text>
               </View>
             ) : (

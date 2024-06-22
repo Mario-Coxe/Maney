@@ -24,6 +24,7 @@ export default function ListViewAtms() {
   const navigation = useNavigation();
   const [atms, setAtms] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
   const [nomeRua, setNomeRua] = useState("");
 
   const [fontsLoaded] = useFonts({
@@ -33,7 +34,10 @@ export default function ListViewAtms() {
 
   useEffect(() => {
     const fetchData = async () => {
-      //setIsLoading(false);
+      if (notFound) {
+        setIsLoading(false);
+      }
+
       try {
         const response = await fetch(`${API_URL}atms/ByStreet/${id}`);
         if (!response.ok) {
@@ -43,9 +47,9 @@ export default function ListViewAtms() {
         setAtms(data);
         //console.log("data", data);
         setIsLoading(false);
-        if (data.length > 0) {
-          const nomeRuaPrimeiroAtm = data[0].street.name;
-          setNomeRua(nomeRuaPrimeiroAtm.substring(0));
+        if (data.length === 0) {
+          setIsLoading(false);
+          setNotFound(true);
         }
       } catch (error) {
         //console.error("Erro:", error);
@@ -196,7 +200,24 @@ export default function ListViewAtms() {
           {nomeRua}
         </Text>
       </View>
-      {isLoading ? (
+      {notFound ? (
+        <View>
+          <Text
+            style={{
+              textAlign: "center",
+              fontFamily: "Poppins_700Bold",
+              color: "red",
+              fontSize: 16,
+            }}
+          >
+            SEM ATMs CADASTRADOS!
+          </Text>
+        </View>
+      ) : (
+        <View></View>
+      )}
+
+      {isLoading && !notFound ? (
         <View style={{ marginTop: 40 }}>
           <Loading />
         </View>
