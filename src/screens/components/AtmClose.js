@@ -192,19 +192,21 @@ const AtmClose = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.atmsproximos}>ATMs MAIS PRÓXIMOS</Text>
-      <FlatList
-        data={atms}
-        renderItem={renderAtmItem}
-        keyExtractor={(item) => item.id.toString()}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.flatListContent}
-      />
-    </View>
+    !isLoading && (
+      <View style={styles.container}>
+        <Text style={styles.atmsproximos}>ATMs MAIS PRÓXIMOS</Text>
+        <FlatList
+          data={atms}
+          renderItem={renderAtmItem}
+          keyExtractor={(item) => item.id.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.flatListContent}
+        />
+      </View>
+    )
   );
-};
+}  
 
 const styles = StyleSheet.create({
   container: {
