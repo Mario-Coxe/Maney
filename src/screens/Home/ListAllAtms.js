@@ -19,7 +19,6 @@ import {
 } from "@expo-google-fonts/poppins";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-
 export default function ListAllAtms() {
   const navigation = useNavigation();
   const [atms, setAtms] = useState([]);
@@ -35,19 +34,14 @@ export default function ListAllAtms() {
   const fetchData = async (address = "") => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `${API_URL}atms/search/${address}`
-      );
+      const response = await fetch(`${API_URL}atms/search/${address}`);
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        setIsLoading(true);
+        //throw new Error("Network response was not ok");
       }
       const data = await response.json();
       setAtms(data);
       setIsLoading(false);
-      if (data.length > 0) {
-        const nomeRuaPrimeiroAtm = data[0].street.name;
-        setNomeRua(nomeRuaPrimeiroAtm);
-      }
     } catch (error) {
       setIsLoading(false);
     }
@@ -56,15 +50,14 @@ export default function ListAllAtms() {
   useEffect(() => {
     fetchData(searchQuery);
   }, [searchQuery]);
-
-  // console.log(searchQuery);
+  //console.log("searchQuery: ", searchQuery);
   //console.log(atms);
   const handleItemPress = (item) => {
     navigation.navigate("MapAtmView", { atmData: item });
   };
 
   const renderLogoBanco = (name) => {
-    return name.substring(name.length - 3, name.length);
+    return name;
   };
 
   const RenderItem = ({ item }) => {
@@ -74,7 +67,7 @@ export default function ListAllAtms() {
 
     let textColor = "#00FF00";
 
-    switch (renderLogoBanco(item.name)) {
+    switch (renderLogoBanco(item.bank.slug)) {
       case "BAI":
         textColor = "blue";
         break;
@@ -120,7 +113,7 @@ export default function ListAllAtms() {
               { color: textColor, fontFamily: "Poppins_700Bold" },
             ]}
           >
-            {renderLogoBanco(item.name)}
+            {renderLogoBanco(item.bank.slug)}
           </Text>
         </View>
         <View style={styles.textContainer}>
@@ -131,8 +124,6 @@ export default function ListAllAtms() {
             ]}
           >
             {item.address}
-            {"\n"}
-            {item.name}
           </Text>
         </View>
         <View style={styles.textContainer}>
