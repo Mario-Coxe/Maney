@@ -59,7 +59,7 @@ const AtmClose = () => {
         longitude: location.coords.longitude,
       });
     } catch (error) {
-     // console.log("Error getting current location:", error);
+      // console.log("Error getting current location:", error);
     }
   };
 
@@ -149,8 +149,8 @@ const AtmClose = () => {
           <Text style={styles.logoText}>{renderLogoBanco(item.bank.slug)}</Text>
         </View>
         <View style={styles.infoContainer}>
-          <Text style={styles.nameText}>{item.name}</Text>
-          <Text style={styles.addressText}>{item.address}</Text>
+          <Text style={styles.addressText}>{item.name}</Text>
+          <Text style={styles.nameText}>{item.address}</Text>
           <View style={styles.statusContainer}>
             <View style={styles.statusItem}>
               {/* <Ionicons
@@ -206,7 +206,22 @@ const AtmClose = () => {
   return (
     !isLoading && (
       <View style={styles.container}>
-        <Text style={styles.atmsproximos}>ATMs MAIS PRÓXIMOS</Text>
+        <Text style={styles.nameProvinceLuanda}>
+          {" "}
+          <Text style={[styles.atmText, { fontFamily: "Poppins_700Bold" }]}>
+            ATMs
+          </Text>{" "}
+          <Text
+            style={{
+              fontFamily: "Poppins_400Regular",
+              fontSize: 12,
+              color: "#000",
+            }}
+          >
+            {" "}
+            - Próximos
+          </Text>
+        </Text>
         <FlatList
           data={atms}
           renderItem={renderAtmItem}
@@ -258,7 +273,7 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontFamily: "Poppins_700Bold",
-    fontSize: 14,
+    fontSize: 12,
     color: "#333",
     marginBottom: 5,
   },
@@ -284,7 +299,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_400Regular",
     fontSize: 12,
     color: "#333",
-    marginRight: 5,
+    marginRight: 2,
   },
   iconStatus: {
     marginRight: 5,
@@ -298,6 +313,15 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_400Regular",
     fontSize: 12,
     color: "#333",
+  },
+  nameProvinceLuanda: {
+    color: "#000",
+    fontSize: 13,
+  },
+  atmText: {
+    color: "#0E7B46",
+    fontSize: 15,
+    right: -20,
   },
 });
 
