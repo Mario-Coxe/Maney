@@ -2,18 +2,18 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import { useFonts, Poppins_700Bold } from "@expo-google-fonts/poppins";
 import { AntDesign } from "@expo/vector-icons";
-import { API_URL } from "../../../application.properties";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { API_URL } from "../../../application.properties";
 
 const Header = ({ title }) => {
   const [fontsLoaded] = useFonts({
     Poppins_700Bold,
   });
+
   const navigation = useNavigation();
   const token = useSelector((state) => state.auth.token);
 
-  console.log("token: ", token);
   const onPressLogout = async () => {
     try {
       const response = await fetch(`${API_URL}logout`, {
@@ -36,16 +36,15 @@ const Header = ({ title }) => {
   };
 
   if (!fontsLoaded) {
-    return <View style={styles.container}></View>;
+    return null; // Evita renderização vazia caso as fontes não estejam carregadas
   }
 
   return (
     <View style={styles.header}>
-      <Text style={[styles.headerText, { fontFamily: "Poppins_700Bold" }]}>
-        {title}
-      </Text>
-      <TouchableOpacity style={styles.button} onPress={onPressLogout}>
-        <AntDesign name="logout" size={20} color="white" />
+      <Text style={styles.headerText}>{title}</Text>
+      <TouchableOpacity style={styles.logoutButton} onPress={onPressLogout}>
+        <AntDesign name="logout" size={24} color="#fff" />
+        <Text style={styles.logoutButtonText}>Sair</Text>
       </TouchableOpacity>
     </View>
   );
@@ -53,23 +52,29 @@ const Header = ({ title }) => {
 
 const styles = StyleSheet.create({
   header: {
-    width: "100%",
-    height: 60,
-    paddingTop: 36,
-    backgroundColor: "#0E7B46",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
+    height: 60,
+    backgroundColor: "#0E7B46",
+    borderBottomWidth: 1,
+    borderBottomColor: "#0B5C37",
   },
   headerText: {
     color: "#fff",
-    fontSize: 18,
+    fontSize: 20,
+    fontFamily: "Poppins_700Bold",
   },
-  textSair: {
+  logoutButton: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  logoutButtonText: {
     color: "#fff",
-    fontSize: 18,
-    textAlign: "right",
+    fontSize: 16,
+    marginLeft: 5,
+    fontFamily: "Poppins_700Bold",
   },
 });
 

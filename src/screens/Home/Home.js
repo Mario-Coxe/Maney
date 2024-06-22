@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, ScrollView, View } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import CarouselPublicidade from "../components/Carousel";
 import ListProvice from "../components/ListProvince";
 import Search from "../components/Search";
@@ -11,13 +11,22 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <Header title={"MONEY"} />
-      <ScrollView>
-        <CarouselPublicidade />
-        <Search />
-        <LuandaMunicpes />
-        <ListProvice />
-        <AtmClose />
-      </ScrollView>
+      <FlatList
+        ListHeaderComponent={
+          <>
+            <CarouselPublicidade />
+            <Search />
+            <LuandaMunicpes />
+            <ListProvice />
+            <AtmClose />
+          </>
+        }
+        data={[]}
+        //renderItem={({ item }) => }
+        keyExtractor={(item) => item.id.toString()}
+        showsVerticalScrollIndicator={true}
+        contentContainerStyle={styles.flatListContent}
+      />
     </View>
   );
 };
@@ -25,6 +34,10 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
+  },
+  flatListContent: {
+    flexGrow: 1,
   },
 });
 

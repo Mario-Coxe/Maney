@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, FlatList } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, FlatList, ScrollView } from "react-native";
 import { requestForegroundPermissionsAsync, getCurrentPositionAsync } from "expo-location";
 import { useNavigation } from "@react-navigation/native";
 import { API_URL } from "../../../application.properties";
@@ -73,10 +73,10 @@ const AtmClose = () => {
 
     fetchClosestAtms();
 
-    // 1 minutes (60000 milliseconds)
+    // Atualização a cada 1 minuto (60000 milissegundos)
     const intervalId = setInterval(fetchClosestAtms, 60000);
 
-    // Clean up interval on component unmount
+    // Limpar intervalo ao desmontar o componente
     return () => clearInterval(intervalId);
   }, [userLocation]);
 
@@ -198,7 +198,8 @@ const AtmClose = () => {
         data={atms}
         renderItem={renderAtmItem}
         keyExtractor={(item) => item.id.toString()}
-        showsVerticalScrollIndicator={true}
+        horizontal
+        showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.flatListContent}
       />
     </View>
@@ -207,19 +208,16 @@ const AtmClose = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#0E7B46",
-    marginTop: 30,
-    borderTopEndRadius: 20,
-    borderTopStartRadius: 20,
+    backgroundColor: "#fff",
+    paddingTop: 20,
+    paddingBottom: 10,
   },
   atmContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "white",
-    marginHorizontal: 20,
-    marginTop: 10,
+    marginHorizontal: 10,
     padding: 10,
     borderRadius: 10,
   },
@@ -243,23 +241,29 @@ const styles = StyleSheet.create({
     color: "black",
   },
   statusContainer: {
+    flexDirection: "row",
     marginTop: 5,
   },
   statusText: {
+    marginRight: 10,
+    fontFamily: "Poppins_400Regular",
+    fontSize: 13,
     color: "black",
   },
   distanceText: {
+    fontFamily: "Poppins_400Regular",
     fontSize: 13,
     color: "black",
   },
   flatListContent: {
-    paddingBottom: 20,
+    paddingHorizontal: 10,
   },
   atmsproximos: {
     textAlign: "center",
     fontFamily: "Poppins_700Bold",
-    color: "#fff",
-    fontSize: 14,
+    color: "#0E7B46",
+    fontSize: 18,
+    marginBottom: 10,
   },
 });
 
