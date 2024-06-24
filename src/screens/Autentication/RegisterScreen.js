@@ -22,6 +22,7 @@ import {
 } from "@expo-google-fonts/poppins";
 import axios from "axios";
 import { API_URL } from "../../../application.properties";
+import MessageAlert from "../components/shared/MessageAlert";
 
 const RegisterScreen = () => {
   const [fontsLoaded] = useFonts({
@@ -34,10 +35,13 @@ const RegisterScreen = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [message, setMessage] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const navigation = useNavigation();
 
   const handleRegister = () => {
     if (password !== confirmPassword) {
-      Alert.alert("Erro", "As senhas não iguais.");
+      showMessage("error", "As senhas não são iguais.");
       return;
     }
 
@@ -49,29 +53,39 @@ const RegisterScreen = () => {
         tipo_usuario: "cliente",
       })
       .then((response) => {
-        //console.log("Registro bem-sucedido:", response.data);
-        Alert.alert("Sucesso", "Usuário registrado com sucesso!");
+        showMessage("success", "Usuário registrado com sucesso!");
 
-        setUsername("");
-        setPhone("");
-        setPassword("");
-        navigation.navigate("Login");
+        // Navegar para a tela de login após 3 segundos
+        setTimeout(() => {
+          setUsername("");
+          setPhone("");
+          setPassword("");
+          setConfirmPassword("");
+          navigation.navigate("Login");
+        }, 3000);
       })
       .catch((error) => {
         console.error("Erro ao registrar o usuário:", error);
-        Alert.alert("Erro", "Erro ao registrar o usuário.");
+        showMessage("error", "Erro ao registrar o usuário.");
       });
   };
 
-  const [showPassword, setShowPassword] = useState(false);
-  const navigation = useNavigation();
+  // Função para exibir mensagem
+  const showMessage = (type, text) => {
+    setMessage({ type, text });
+
+    // Limpa a mensagem após 3 segundos
+    setTimeout(() => {
+      setMessage({});
+    }, 3000);
+  };
 
   if (!fontsLoaded) {
     return <View style={styles.container}></View>;
   }
 
   return (
-  <View style={styles.container}>
+    <View style={styles.container}>
       <ScrollView>
         <View style={styles.cardContainer}>
           <Text
@@ -98,9 +112,12 @@ const RegisterScreen = () => {
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
-            <AntDesign name="arrowleft" size={24} color="#fff" />
+            <AntDesign name="arrowleft" size={24} color="#0E7B46" />
           </TouchableOpacity>
         </View>
+        {message.type && (
+          <MessageAlert type={message.type} message={message.text} />
+        )}
         <View style={styles.inputContainer}>
           <View style={styles.inputIconContainer}>
             <AntDesign
@@ -114,6 +131,7 @@ const RegisterScreen = () => {
               placeholderTextColor={"gray"}
               onChangeText={(text) => setUsername(text)}
               placeholder="Nome"
+              value={username}
             />
           </View>
           <View style={styles.inputIconContainer}>
@@ -126,8 +144,10 @@ const RegisterScreen = () => {
             <TextInput
               style={[styles.input, { fontFamily: "Poppins_600SemiBold" }]}
               placeholder="Telefone"
+              maxLength={9}
               onChangeText={(text) => setPhone(text)}
               placeholderTextColor={"gray"}
+              value={phone}
             />
           </View>
           <View style={styles.inputIconContainer}>
@@ -143,6 +163,7 @@ const RegisterScreen = () => {
               secureTextEntry={!showPassword}
               onChangeText={(text) => setPassword(text)}
               placeholderTextColor={"gray"}
+              value={password}
             />
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
               <FontAwesome5
@@ -166,6 +187,7 @@ const RegisterScreen = () => {
               secureTextEntry={!showPassword}
               onChangeText={(text) => setConfirmPassword(text)}
               placeholderTextColor={"gray"}
+              value={confirmPassword}
             />
             <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
               <FontAwesome5
@@ -176,7 +198,6 @@ const RegisterScreen = () => {
               />
             </TouchableOpacity>
           </View>
-
           <TouchableOpacity
             style={styles.entrarButton}
             onPress={handleRegister}
@@ -187,7 +208,7 @@ const RegisterScreen = () => {
                 { fontFamily: "Poppins_600SemiBold" },
               ]}
             >
-              Registar
+              Registrar
             </Text>
           </TouchableOpacity>
         </View>
