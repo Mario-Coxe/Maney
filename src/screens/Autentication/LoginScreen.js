@@ -13,7 +13,7 @@ import {
 import { useDispatch } from "react-redux";
 import { login } from "../../features/authentication/authSlice";
 import { useNavigation } from "@react-navigation/native";
-
+import MessageAlert from "../components/shared/MessageAlert";
 const LoginScreen = () => {
   const [fontsLoaded] = useFonts({
     Poppins_700Bold,
@@ -27,6 +27,7 @@ const LoginScreen = () => {
   const [userData, setUserData] = useState({});
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [message, setMessage] = useState({});
 
   const handleLogin = async () => {
     try {
@@ -45,13 +46,11 @@ const LoginScreen = () => {
           navigation.navigate("HomeAgent", { userData: userDataFromResponse });
         }
       } else {
-        Alert.alert("Usuário não encontrado", "Dados de login inválidos.");
-        //throw new Error("Dados de login inválidos.");
+        //showMessage("error", "Dados de login inválidos")
         //console.log("OI")
       }
     } catch (error) {
-      console.error("Erro durante o login:", error);
-      Alert.alert("Erro", "Durante o login");
+      //showMessage("error", "Erro durante ao login");
     }
   };
 

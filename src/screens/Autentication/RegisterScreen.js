@@ -62,10 +62,10 @@ const RegisterScreen = () => {
           setPassword("");
           setConfirmPassword("");
           navigation.navigate("Login");
-        }, 3000);
+        }, 1000);
       })
       .catch((error) => {
-        console.error("Erro ao registrar o usuário:", error);
+        //console.error("Erro ao registrar o usuário:", error);
         showMessage("error", "Erro ao registrar o usuário.");
       });
   };
