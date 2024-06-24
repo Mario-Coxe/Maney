@@ -45,7 +45,7 @@ export default function ListViewAtms() {
         }
         const data = await response.json();
         setAtms(data);
-        //console.log("data", data);
+        setNomeRua(data[0].street.name);
         setIsLoading(false);
         if (data.length === 0) {
           setIsLoading(false);
