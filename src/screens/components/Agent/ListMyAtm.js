@@ -17,15 +17,17 @@ import {
 } from "@expo-google-fonts/poppins";
 import { Ionicons } from "@expo/vector-icons";
 import ATMModal from "./ATMModal";
+import { useSelector } from "react-redux";
 
 const ListMyAtm = ({ id, name }) => {
   const route = useRoute();
   //const { id } = route.params;
+
+  console.log(id, " <> ", name)
   const navigation = useNavigation();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedATMId, setSelectedATMId] = useState(null);
-
   const [hasCash, setHasCash] = useState(false);
   const [hasPaper, setHasPaper] = useState(true);
 
@@ -36,37 +38,47 @@ const ListMyAtm = ({ id, name }) => {
 
   const [atm, setAtm] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const token = useSelector((state) => state.auth.token);
+
   //const provinceLuandaId = 5;
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`${API_URL}getAtmAgent/${id}`);
+        const response = await fetch(`${API_URL}getAtmAgent/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const data = await response.json();
         setAtm(data);
         setIsLoading(false);
+
+        console.log(data)
+
       } catch (error) {
         console.error("Erro:", error);
-        setIsLoading(false);
+        setIsLoading(true);
       }
     };
 
     fetchData();
-  }, []);
+  }, [id, token]);
 
   const updateData = async () => {
     try {
       const response = await fetch(`${API_URL}getAtmAgent/${id}`);
       const data = await response.json();
       setAtm(data);
+
     } catch (error) {
       console.error("Erro:", error);
     }
   };
 
   const renderLogoBanco = (name) => {
-    return name.substring(name.length - 3, name.length);
+    return name;
   };
 
   const RenderItem = ({ item }) => {
@@ -76,7 +88,7 @@ const ListMyAtm = ({ id, name }) => {
 
     let textColor = "#00FF00";
 
-    switch (renderLogoBanco(item.atm.name)) {
+    switch (renderLogoBanco(item.atm.bank.slug)) {
       case "BAI":
         textColor = "blue";
         break;
@@ -122,7 +134,7 @@ const ListMyAtm = ({ id, name }) => {
               { color: textColor, fontFamily: "Poppins_700Bold" },
             ]}
           >
-            {renderLogoBanco(item.atm.name)}
+            {renderLogoBanco(item.atm.bank.slug)}
           </Text>
         </View>
         <View style={styles.textContainer}>
@@ -186,25 +198,6 @@ const ListMyAtm = ({ id, name }) => {
         <Loading />
       ) : (
         <View>
-          <View style={styles.provinceLuanda}>
-            <Text style={styles.nameProvinceLuanda}>
-              {" "}
-              <Text style={[styles.atmText, { fontFamily: "Poppins_700Bold" }]}>
-                ATMs geridos por
-              </Text>{" "}
-              <Text
-                style={{
-                  fontFamily: "Poppins_400Regular",
-                  fontSize: 12,
-                  color: "#000",
-                }}
-              >
-                {" "}
-                - {name}
-              </Text>
-            </Text>
-          </View>
-
           <FlatList
             data={atm}
             renderItem={RenderItem}

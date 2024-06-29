@@ -10,15 +10,17 @@ import Profile from "./Profile";
 const HomeAgent = () => {
   const route = useRoute();
   const { userData } = route.params;
+
+  console.log(userData.bank.name)
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
       <Header title={"MONEY"} />
       <BankCard
-        bankName="Banco XYZ"
+        bankName={userData.bank.name}
         name={userData.name}
-        cardNumber="1234 5678 9012 3456"
+        cardNumber={userData.phone}
       />
       <ListMyAtm id={userData.id} name={userData.name} />
       <View style={{ alignItems: "center" }}>
@@ -35,7 +37,7 @@ const HomeAgent = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff", // Cor de fundo da tela
+    backgroundColor: "#fff", 
   },
 });
 

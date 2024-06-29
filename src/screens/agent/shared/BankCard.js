@@ -21,12 +21,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 20,
     marginVertical: 10,
-    padding: 20,
-    elevation: 20, // Elevação para sombra no Android
-    shadowColor: "#000", // Cor da sombra no iOS
-    shadowOffset: { width: 20, height: 2 }, // Configuração da sombra
-    shadowOpacity: 0.3, // Opacidade da sombra
-    shadowRadius: 2, // Raio da sombra
+    padding: 40,
+    elevation: 20,
+    shadowColor: "#000", 
+    shadowOffset: { width: 20, height: 2 }, 
+    shadowOpacity: 0.10, 
+    shadowRadius: 10,
+    marginBottom: 20,
+    marginTop: 35
   },
   cardHeader: {
     flexDirection: "row",
@@ -35,7 +37,7 @@ const styles = StyleSheet.create({
   },
   bankName: {
     color: "#fff",
-    fontSize: 18,
+    fontSize: 14,
     fontFamily: "Poppins_700Bold",
   },
   cardNumber: {
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     color: "#fff",
-    fontSize: 24,
+    fontSize: 18,
     fontFamily: "Poppins_600SemiBold",
   },
 });

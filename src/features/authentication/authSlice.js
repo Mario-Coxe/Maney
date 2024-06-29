@@ -22,10 +22,10 @@ export const login = createAsyncThunk("login", async (data) => {
     return response.data;
   } catch (error) {
     if (error.response && error.response.status === 401) {
-      console.error("Credenciais incorretas.");
+      //console.error("Credenciais incorretas.");
       console.log("dados: ", data);
     } else {
-      console.error("Erro:", error);
+      //console.error("Erro:", error);
     }
     throw error;
   }

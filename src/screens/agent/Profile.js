@@ -104,7 +104,7 @@ const Profile = () => {
             style={styles.backButton}
             onPress={() => navigation.goBack()}
           >
-            <AntDesign name="arrowleft" size={24} color="#fff" />
+            <AntDesign name="arrowleft" size={24} color="#0E7B46" />
           </TouchableOpacity>
         </View>
         <View style={styles.inputContainer}>
