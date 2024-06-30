@@ -28,7 +28,7 @@ const ListMyAtm = ({ id, name }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedATM, setSelectedATM] = useState(null);
   const [hasCash, setHasCash] = useState(false);
-  const [hasPaper, setHasPaper] = useState(true);
+  const [hasPaper, setHasPaper] = useState(false);
   const [howManyCash, setHowManyCash] = useState(0);
   const [howManyPaper, setHowManyPaper] = useState(0);
 
@@ -61,6 +61,13 @@ const ListMyAtm = ({ id, name }) => {
 
     fetchData();
   }, [id, token]);
+
+  useEffect(() => {
+    if (modalVisible && selectedATM) {
+      setHasCash(!!selectedATM.has_cash);
+      setHasPaper(!!selectedATM.has_paper);
+    }
+  }, [modalVisible, selectedATM]);
 
   const handleItemPress = (item) => {
     setSelectedATM(item.atm);
@@ -237,7 +244,6 @@ const ListMyAtm = ({ id, name }) => {
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
             <Text style={styles.modalTitle}>ACTUALIZAR</Text>
-            {/* <Text style={styles.modalText}>ID: {selectedATM?.id}</Text> */}
             <View style={styles.switchContainer}>
               <Text style={styles.label}>Tem Dinheiro:</Text>
               <Switch

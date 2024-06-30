@@ -6,7 +6,7 @@ const BankCard = ({ bankName, name, cardNumber }) => {
     <View style={styles.cardContainer}>
       <View style={styles.cardHeader}>
         <Text style={styles.bankName}>{bankName}</Text>
-        <Text style={styles.cardNumber}>{cardNumber}</Text>
+        <Text style={styles.cardNumber}>+244 {cardNumber}</Text>
       </View>
       <View style={styles.cardContent}>
         <Text style={styles.cardTitle}>{name}</Text>
